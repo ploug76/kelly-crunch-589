@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>Kelly Crunch</title><!--og--><meta name="description" content="Help Kelly the chameleon feed little critters to bigger ones until they POP! Chain reactions, food chains, bombs, spiky critters and gem rocks. Endless mode + 30 puzzles."><meta property="og:type" content="website"><meta property="og:site_name" content="five8nine Studios"><meta property="og:title" content="Kelly Crunch"><meta property="og:description" content="Help Kelly the chameleon feed little critters to bigger ones until they POP! Chain reactions, food chains, bombs, spiky critters and gem rocks. Endless mode + 30 puzzles."><meta property="og:url" content="https://ploug76.github.io/kelly-crunch-589/"><meta property="og:image" content="https://ploug76.github.io/kelly-crunch-589/cover.png"><meta property="og:image:secure_url" content="https://ploug76.github.io/kelly-crunch-589/cover.png"><meta property="og:image:type" content="image/png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Kelly Crunch 8-bit game box cover"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Kelly Crunch"><meta name="twitter:description" content="Help Kelly the chameleon feed little critters to bigger ones until they POP! Chain reactions, food chains, bombs, spiky critters and gem rocks. Endless mode + 30 puzzles."><meta name="twitter:image" content="https://ploug76.github.io/kelly-crunch-589/cover.png"><!--/og-->
+<title>Alien Crunch</title><!--og--><meta name="description" content="Pilot your little UFO alien and feed small aliens to bigger ones until they POP! Chain reactions, food chains, bombs, spiky critters and gem rocks. Endless mode + 30 puzzles."><meta property="og:type" content="website"><meta property="og:site_name" content="five8nine Studios"><meta property="og:title" content="Alien Crunch"><meta property="og:description" content="Pilot your little UFO alien and feed small aliens to bigger ones until they POP! Chain reactions, food chains, bombs, spiky critters and gem rocks. Endless mode + 30 puzzles."><meta property="og:url" content="https://ploug76.github.io/kelly-crunch-589/"><meta property="og:image" content="https://ploug76.github.io/kelly-crunch-589/cover.png"><meta property="og:image:secure_url" content="https://ploug76.github.io/kelly-crunch-589/cover.png"><meta property="og:image:type" content="image/png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Alien Crunch 8-bit game box cover"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Alien Crunch"><meta name="twitter:description" content="Pilot your little UFO alien and feed small aliens to bigger ones until they POP! Chain reactions, food chains, bombs, spiky critters and gem rocks. Endless mode + 30 puzzles."><meta name="twitter:image" content="https://ploug76.github.io/kelly-crunch-589/cover.png"><!--/og-->
 <meta name="theme-color" content="#2fae4a"><link rel="manifest" href="manifest.json"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
-<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Kelly Crunch">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Alien Crunch">
 <style>html,body{margin:0;height:100%;overflow:hidden;background:#1d1240;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;overscroll-behavior:none}
 canvas{position:fixed;left:0;top:0;display:block;touch-action:none}#sp{position:fixed;visibility:hidden;pointer-events:none;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}</style><!--sample--><script>(()=>{try{const R=location.pathname.split('/')[1]||'',K='pa_sample:'+R,q=new URLSearchParams(location.search),v=q.get('sample');
 if(v==='0'||(!v&&/\/peters-arcade\//.test(document.referrer)))sessionStorage.removeItem(K);
@@ -10,7 +10,7 @@ const s=sessionStorage.getItem(K);window.__SAMPLE=s||null;if(!s)return;
 document.querySelectorAll('link[rel=manifest]').forEach(l=>l.remove());
 if('serviceWorker' in navigator){try{navigator.serviceWorker.register=()=>new Promise(()=>{})}catch(e){}}
 addEventListener('beforeinstallprompt',e=>{e.preventDefault();e.stopImmediatePropagation()},true)}catch(e){}})()</script><!--/sample--></head><body>
-<canvas id="cv" aria-label="Kelly Crunch game"></canvas><div id="sp"></div>
+<canvas id="cv" aria-label="Alien Crunch game"></canvas><div id="sp"></div>
 <script>window.addEventListener('error',e=>{(window.__ERR=window.__ERR||[]).push(String(e.message))});
 // ===== Kelly Crunch rules engine (shared by game, solver, tests) =====
 // Board: array of columns; each column is an array top->bottom of cells.
@@ -107,7 +107,7 @@ const AU={ctx:null,m:null,sg:null,mg:null,nb:null,
   this.m=c.createGain();this.m.connect(c.destination);this.sg=c.createGain();this.sg.connect(this.m);this.mg=c.createGain();this.mg.connect(this.m);
   const comp=c.createDynamicsCompressor();this.m.disconnect();this.m.connect(comp);comp.connect(c.destination);
   const n=c.createBuffer(1,c.sampleRate*1,c.sampleRate),d=n.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;this.nb=n;this.apply()}catch(e){this.ctx=null}},
- apply(){if(!this.ctx)return;const t=this.ctx.currentTime;this.m.gain.setTargetAtTime(save.muted?0:1,t,.02);this.sg.gain.setTargetAtTime(save.sfx?.75:0,t,.02);this.mg.gain.setTargetAtTime(save.music&&!paused?.30:0,t,.05)},
+ apply(){if(!this.ctx)return;const t=this.ctx.currentTime;this.m.gain.setTargetAtTime(save.muted?0:1,t,.02);this.sg.gain.setTargetAtTime(save.sfx?.75:0,t,.02);this.mg.gain.setTargetAtTime(save.music&&!paused?.14:0,t,.05)},
  unlock(){this.init();if(this.ctx&&this.ctx.state!=='running'&&!hidden)this.ctx.resume().catch(()=>{})},
  tone(f,d,type='square',v=.2,f2=null,dl=0,dest=null){const c=this.ctx;if(!c)return;const t=c.currentTime+dl,o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.setValueAtTime(f,t);if(f2)o.frequency.exponentialRampToValueAtTime(Math.max(20,f2),t+d);
   g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(v,t+.006);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(dest||this.sg);o.start(t);o.stop(t+d+.03)},
@@ -161,9 +161,9 @@ const MUS={step:0,next:0,bpm:116,on:false,track:'play',
 const COLORS=[{n:'Berry',b:'#ff4f6e',l:'#ff9aac',d:'#a8173a'},{n:'Sky',b:'#3aa8ff',l:'#9ad3ff',d:'#13599e'},{n:'Lime',b:'#56d04f',l:'#a8f29c',d:'#1f7a2a'},{n:'Sunny',b:'#ffcc2e',l:'#fff09a',d:'#b07a00'},{n:'Grape',b:'#a866ff',l:'#d6b4ff',d:'#5a23a8'}];
 const SIZES=['Nibbler','Muncher','Chomper'];
 const MAXR_E=10,MAXR_P=9,NC_E=7;
-const COMBO_WORDS=['','Crunchy!','Double Crunch!','Triple Crunch!','Super Crunch!','Mega Munch!','Ultra Munch!','KELLY CRUNCH!!'];
+const COMBO_WORDS=['','Crunchy!','Double Crunch!','Triple Crunch!','Super Crunch!','Mega Munch!','Ultra Munch!','ALIEN CRUNCH!!'];
 const PUZ=PUZZLES; // generated + verified by solver (see build)
-const TIPS={0:'Swipe to move Kelly. Tap to grab the bottom critter, tap again to spit it!',1:'Feed a smaller critter to the next size up: Nibbler ➜ Muncher ➜ Chomper.',2:'A critter that has eaten is FULL (puffy cheeks). Feed it again and it POPS!',3:'Feed a FULL critter to a bigger one for a Food Chain pop!',4:'Pops spread to touching critters of the same size AND color.',10:'BOMBS eat any critter. Feed a bomb twice to blast everything around it!',15:'Never grab SPIKY critters! Pop something next to them to clear them.',20:'Gem rocks can’t be grabbed. Pop a critter beside one for a gem shower!'};
+const TIPS={0:'Swipe to move your alien. Tap to grab the bottom critter, tap again to spit it!',1:'Feed a smaller critter to the next size up: Blob ➜ Triangle ➜ Horned brute.',2:'A critter that has eaten is FULL (puffy cheeks). Feed it again and it POPS!',3:'Feed a FULL critter to a bigger one for a Food Chain pop!',4:'Pops spread to touching critters of the same size AND color.',10:'BOMBS eat any critter. Feed a bomb twice to blast everything around it!',15:'Never grab SPIKY critters! Pop something next to them to clear them.',20:'Gem rocks can’t be grabbed. Pop a critter beside one for a gem shower!'};
 let V=new Map(); // visual state per cell id
 function newVis(cell,x,y){const v={x,y,vx:0,vy:0,sx:1,sy:1,svx:0,svy:0,ph:Math.random()*6.28,open:0,blink:rand(1,4),look:0,shiver:0,eaten:null,bump:0};V.set(cell.id,v);return v}
 function geo(){const s=SB();const NC=G.NC,MAXR=G.MAXR;const tip=G.mode==='puzzle'?44:0;const top=s.t+122+tip;const bottomPad=106;
@@ -172,7 +172,7 @@ function geo(){const s=SB();const NC=G.NC,MAXR=G.MAXR;const tip=G.mode==='puzzle
  return{x0,colW,top,rowH,dangerY,base,kY:Math.min(s.b-14,dangerY+bottomPad-6),s,tip}}
 let GE=null;
 const colX=c=>GE.x0+GE.colW*(c+.5),rowY=r=>GE.top+GE.rowH*(r+.5);
-const radius=cell=>cell.k==='c'?GE.base*[.30,.39,.48][cell.s]:GE.base*.40;
+const radius=cell=>cell.k==='c'?GE.base*[.23,.36,.47][cell.s]:GE.base*.40;
 function startGame(mode,pi=0){AU.unlock();V=new Map();parts.length=0;gems.length=0;labels.length=0;
  G={mode,pi,NC:NC_E,MAXR:MAXR_E,B:[],kelly:{col:3,x:0,vx:0,stun:0,mouth:0,emo:'',emoT:0,squash:0,bob:0,look:0,blinkT:2,hop:0},hold:null,tg:null,flights:[],res:null,queue:[],
   score:0,shown:0,level:1,gemsN:0,need:25,pushT:0,burps:1,chainMax:0,popped:0,moves:0,limit:0,par:0,undo:[],t:0,panel:null,panelT:0,shake:0,hitstop:0,hint:null,warnT:0,danger:0,newBest:false,ann:null,tipT:0,overT:0,lastPush:0,clearBonus:0};
@@ -327,21 +327,39 @@ function eyes(R,ex,ey,er,v,kind){const K=G?G.kelly:null;const look=K?clamp((K.x-
   if(bl){X.strokeStyle='#222';X.lineWidth=er*.28;X.beginPath();X.moveTo(x-er*.7,y);X.quadraticCurveTo(x,y+er*.5,x+er*.7,y);X.stroke();continue}
   const px=x+look*er*.38,py=y+er*.32;X.fillStyle='#1d1530';X.beginPath();X.arc(px,py,er*.52,0,6.283);X.fill();X.fillStyle='#fff';X.beginPath();X.arc(px-er*.18,py-er*.2,er*.18,0,6.283);X.fill()}
  if(kind==='angry'){X.strokeStyle='#2a1c38';X.lineWidth=er*.35;X.lineCap='round';X.beginPath();X.moveTo(-ex-er*.8,ey-er*1.2);X.lineTo(-ex+er*.7,ey-er*.6);X.moveTo(ex+er*.8,ey-er*1.2);X.lineTo(ex-er*.7,ey-er*.6);X.stroke()}}
+function alienEyes(P,er,v,kind){const K=G?G.kelly:null;const look=K?clamp((K.x-v.x)/160,-1,1):Math.sin(RT+v.ph)*.6;const bl=v.blink<.12;
+ for(const [x,y] of P){X.fillStyle='#e9ffd0';X.beginPath();X.ellipse(x,y,er*1.05,er*1.2,0,0,6.283);X.fill();X.strokeStyle='rgba(0,0,0,.6)';X.lineWidth=Math.max(1,er*.14);X.stroke();
+  if(bl){X.strokeStyle='#222';X.lineWidth=er*.28;X.beginPath();X.moveTo(x-er*.7,y);X.quadraticCurveTo(x,y+er*.5,x+er*.7,y);X.stroke();continue}
+  const px=x+look*er*.3,py=y+er*.2;X.fillStyle='#14102a';X.beginPath();X.ellipse(px,py,er*.62,er*.8,0,0,6.283);X.fill();X.fillStyle='#7dff9a';X.beginPath();X.ellipse(px,py,er*.18,er*.5,0,0,6.283);X.fill();X.fillStyle='#fff';X.beginPath();X.arc(px-er*.25,py-er*.35,er*.18,0,6.283);X.fill()}
+ if(kind==='angry'){X.strokeStyle='#2a1c38';X.lineWidth=er*.35;X.lineCap='round';const a=P[0],b=P[P.length-1];X.beginPath();X.moveTo(a[0]-er*.9,a[1]-er*1.5);X.lineTo(a[0]+er*.6,a[1]-er*1.0);X.moveTo(b[0]+er*.9,b[1]-er*1.5);X.lineTo(b[0]-er*.6,b[1]-er*1.0);X.stroke()}}
 function drawCritter(cell,x,y,R,v,alpha=1){X.save();X.translate(x,y);const wob=cell.f?Math.sin(RT*9+v.ph)*.05:0;X.scale(v.sx*(1+wob),v.sy*(1-wob));if(alpha<1)X.globalAlpha=alpha;
  const lw=Math.max(1.8,R*.09);
  if(cell.k==='c'){const C=COLORS[cell.c],s=cell.s,full=cell.f;const RR=R*(full?1.08:1);
-  // ears / horns / antennae
-  X.lineWidth=lw;X.strokeStyle=C.d;
-  if(s===0){X.lineCap='round';for(const sx of [-1,1]){X.beginPath();X.moveTo(sx*RR*.3,-RR*.8);X.quadraticCurveTo(sx*RR*.5,-RR*1.4,sx*RR*.75+Math.sin(RT*4+v.ph)*2,-RR*1.45);X.stroke();X.fillStyle=C.l;X.beginPath();X.arc(sx*RR*.75+Math.sin(RT*4+v.ph)*2,-RR*1.45,RR*.18,0,6.283);X.fill();X.stroke()}}
-  else if(s===1){for(const sx of [-1,1]){X.fillStyle=C.b;X.beginPath();X.arc(sx*RR*.68,-RR*.68,RR*.3,0,6.283);X.fill();X.stroke();X.fillStyle=C.l;X.beginPath();X.arc(sx*RR*.68,-RR*.68,RR*.15,0,6.283);X.fill()}}
-  else{for(const sx of [-1,1]){X.fillStyle='#fff3d6';X.beginPath();X.moveTo(sx*RR*.35,-RR*.82);X.quadraticCurveTo(sx*RR*.95,-RR*1.0,sx*RR*.92,-RR*1.42);X.quadraticCurveTo(sx*RR*.7,-RR*1.0,sx*RR*.62,-RR*.62);X.closePath();X.fill();X.strokeStyle='#8a6a3a';X.stroke()}}
+  // ALIEN bodies: size 0 = round blob (1 eye, 1 antenna), 1 = TRIANGLE (2 eyes, 2 antennae), 2 = big brute with ARMS, LEGS, HORNS (3 eyes)
+  X.lineWidth=lw;X.strokeStyle=C.d;X.lineCap='round';
+  const glow=(x,y,r)=>{X.fillStyle='rgba(200,255,120,.45)';X.beginPath();X.arc(x,y,r*1.9,0,6.283);X.fill();X.fillStyle='#d8ff6a';X.beginPath();X.arc(x,y,r,0,6.283);X.fill();X.strokeStyle=C.d;X.stroke()};
+  const wv=Math.sin(RT*4+v.ph)*RR*.08;
+  if(s===0){X.beginPath();X.moveTo(0,-RR*.9);X.quadraticCurveTo(RR*.25,-RR*1.3,wv,-RR*1.5);X.stroke();glow(wv,-RR*1.5,RR*.2)}
+  else if(s===1){for(const sx of [-1,1]){X.strokeStyle=C.d;X.beginPath();X.moveTo(sx*RR*.12,-RR*.95);X.quadraticCurveTo(sx*RR*.3,-RR*1.4,sx*RR*.55+wv,-RR*1.45);X.stroke();glow(sx*RR*.55+wv,-RR*1.45,RR*.15)}}
+  else{// legs
+   X.fillStyle=C.d;for(const sx of [-1,1]){rr(sx*RR*.5-RR*.17,RR*.6,RR*.34,RR*.5,RR*.12);X.fill();X.beginPath();X.ellipse(sx*RR*.5,RR*1.08,RR*.26,RR*.12,0,0,6.283);X.fill()}
+   // arms (waving)
+   for(const sx of [-1,1]){const a=Math.sin(RT*5+v.ph+sx)*.35;X.strokeStyle=C.d;X.lineWidth=RR*.2;X.beginPath();X.moveTo(sx*RR*.75,RR*.05);X.quadraticCurveTo(sx*RR*1.15,RR*(-.1+a*.3),sx*RR*1.12,RR*(-.45+a*.4));X.stroke();
+    X.fillStyle=C.b;X.beginPath();X.arc(sx*RR*1.12,RR*(-.5+a*.4),RR*.16,0,6.283);X.fill();X.lineWidth=lw;X.stroke()}
+   // horns
+   for(const sx of [-1,1]){X.fillStyle='#fff3d6';X.beginPath();X.moveTo(sx*RR*.3,-RR*.72);X.quadraticCurveTo(sx*RR*.95,-RR*.95,sx*RR*.9,-RR*1.4);X.quadraticCurveTo(sx*RR*.65,-RR*1.0,sx*RR*.62,-RR*.55);X.closePath();X.fill();X.strokeStyle='#8a6a3a';X.lineWidth=lw;X.stroke()}}
   // body
   const gr=X.createRadialGradient(-RR*.35,-RR*.4,RR*.1,0,0,RR*1.1);gr.addColorStop(0,C.l);gr.addColorStop(.55,C.b);gr.addColorStop(1,C.d);
-  X.fillStyle=gr;fuzzPath(RR,[9,12,15][s],RR*[.10,.13,.14][s]);X.fill();X.strokeStyle=C.d;X.lineWidth=lw;X.stroke();
-  X.fillStyle='rgba(255,255,255,.28)';X.beginPath();X.ellipse(0,RR*.42,RR*.58,RR*.42,0,0,6.283);X.fill();
-  symbol(cell.c,0,RR*.64,RR*.15);
+  X.fillStyle=gr;X.beginPath();
+  if(s===0){X.arc(0,0,RR,0,6.283)}
+  else if(s===1){const P=[[0,-RR*1.12],[RR*1.08,RR*.82],[-RR*1.08,RR*.82]];const rad=RR*.22;X.moveTo((P[0][0]+P[2][0])/2,(P[0][1]+P[2][1])/2);for(let k=0;k<3;k++){const a=P[k],b=P[(k+1)%3];X.arcTo(a[0],a[1],b[0],b[1],rad)}X.closePath()}
+  else{rr(-RR*.88,-RR*.82,RR*1.76,RR*1.52,RR*.55)}
+  X.fill();X.strokeStyle=C.d;X.lineWidth=lw;X.stroke();
+  X.fillStyle='rgba(255,255,255,.22)';X.beginPath();X.ellipse(0,RR*(s===1?.5:.42),RR*(s===1?.5:.55),RR*.28,0,0,6.283);X.fill();
+  symbol(cell.c,s===1?0:0,s===0?RR*.66:s===1?-RR*.48:RR*.5,RR*(s===1?.13:.14));
+  if(s===2){X.fillStyle='rgba(0,0,0,.18)';for(const sx of [-1,1]){X.beginPath();X.arc(sx*RR*.55,RR*.35,RR*.07,0,6.283);X.fill()}}
   // face
-  const er=RR*[.27,.24,.21][s];eyes(RR,RR*[.33,.36,.38][s],-RR*.14,er,v,s===2&&!full?'angry':'');
+  if(s===1)X.translate(0,RR*.12);if(s===0)alienEyes([[0,-RR*.12]],RR*.42,v,'');else if(s===1)alienEyes([[-RR*.3,-RR*.12],[RR*.3,-RR*.12]],RR*.22,v,'');else alienEyes([[-RR*.42,-RR*.2],[0,-RR*.42],[RR*.42,-RR*.2]],RR*.19,v,full?'':'angry');
   const op=v.open;
   if(full){X.fillStyle='rgba(255,120,150,.55)';for(const sx of [-1,1]){X.beginPath();X.ellipse(sx*RR*.62,RR*.18,RR*.22,RR*.16,0,0,6.283);X.fill()}
    X.strokeStyle='#3a1630';X.lineWidth=lw*.9;X.lineCap='round';X.beginPath();X.moveTo(-RR*.22,RR*.3);X.quadraticCurveTo(-RR*.11,RR*.38,0,RR*.3);X.quadraticCurveTo(RR*.11,RR*.38,RR*.22,RR*.3);X.stroke();
@@ -365,26 +383,26 @@ function drawCritter(cell,x,y,R,v,alpha=1){X.save();X.translate(x,y);const wob=c
   const cols=['#6ff3ff','#ff8ad8','#b8ff7a'];[[-.35,-.1,.45],[.3,-.3,.38],[.05,.25,.32]].forEach(([a,b,s],i)=>{X.fillStyle=cols[i];X.beginPath();X.moveTo(a*R,(b-s)*R);X.lineTo((a+s*.6)*R,b*R);X.lineTo(a*R,(b+s)*R);X.lineTo((a-s*.6)*R,b*R);X.closePath();X.fill();X.fillStyle='rgba(255,255,255,.6)';X.beginPath();X.moveTo(a*R,(b-s)*R);X.lineTo((a+s*.3)*R,b*R);X.lineTo(a*R,b*R);X.closePath();X.fill()});
   const tw=(Math.sin(RT*3+v.ph)+1)/2;X.fillStyle=`rgba(255,255,255,${tw})`;starPath(R*.5,-R*.55,R*.22,R*.06,4);X.fill()}
  X.restore()}
-// ===================== Kelly the chameleon =====================
+// ===================== the player's alien (UFO pilot) =====================
 function drawKelly(x,y,sc){const K=G?G.kelly:{mouth:0,hop:0,squash:0,emo:'',blinkT:3,stun:0};X.save();const hop=Math.sin(K.hop*Math.PI)*8;X.translate(x,y-hop);X.scale(sc,sc);const sq=K.squash*.12;X.scale(1+sq,1-sq);
  const tgx=G&&G.tg?colX(G.tg.col):x,tgy=G&&G.tg?G.tg.ty:y-300;
- // tail
- X.strokeStyle='#2f8f3c';X.lineWidth=9;X.lineCap='round';X.beginPath();X.moveTo(20,-14);X.quadraticCurveTo(44,-8,42,-26);X.stroke();X.lineWidth=7;X.beginPath();X.arc(34,-28,8,0,5.2);X.stroke();X.strokeStyle='#5fd06a';X.lineWidth=4;X.beginPath();X.arc(34,-28,8,0,5.2);X.stroke();
- // feet
- X.fillStyle='#3da54a';for(const s of [-1,1]){X.beginPath();X.ellipse(s*15,-3,10,5,0,0,6.283);X.fill()}
- // body
- let gr=X.createRadialGradient(-8,-30,4,0,-20,32);gr.addColorStop(0,'#9cf09a');gr.addColorStop(1,'#33a447');X.fillStyle=gr;X.beginPath();X.ellipse(0,-20,26,19,0,0,6.283);X.fill();X.strokeStyle='#1f6e2c';X.lineWidth=2.5;X.stroke();
- X.fillStyle='#e8ffb8';X.beginPath();X.ellipse(0,-15,15,11,0,0,6.283);X.fill();
- X.strokeStyle='rgba(31,110,44,.5)';X.lineWidth=1.5;for(let i=-1;i<=1;i++){X.beginPath();X.moveTo(i*6-4,-22);X.lineTo(i*6+4,-22);X.stroke()}
- // head
- gr=X.createRadialGradient(-6,-56,4,0,-48,30);gr.addColorStop(0,'#a8f5a2');gr.addColorStop(1,'#3cb550');X.fillStyle=gr;X.beginPath();X.ellipse(0,-47,24,20,0,0,6.283);X.fill();X.strokeStyle='#1f6e2c';X.lineWidth=2.5;X.stroke();
- // crest
- X.fillStyle='#2f9a40';X.beginPath();X.moveTo(-10,-64);X.quadraticCurveTo(0,-80,10,-64);X.closePath();X.fill();
- // bow
- X.fillStyle='#ff5fa2';X.beginPath();X.moveTo(-10,-66);X.lineTo(-22,-76);X.lineTo(-21,-60);X.closePath();X.fill();X.beginPath();X.moveTo(-10,-66);X.lineTo(1,-77);X.lineTo(0,-61);X.closePath();X.fill();X.fillStyle='#ff9ccb';X.beginPath();X.arc(-10,-67,4,0,6.283);X.fill();
+ // UFO saucer base
+ X.fillStyle='rgba(180,255,140,.25)';X.beginPath();X.moveTo(-16,-6);X.lineTo(16,-6);X.lineTo(26,10);X.lineTo(-26,10);X.closePath();X.fill();
+ let gr=X.createLinearGradient(0,-26,0,-2);gr.addColorStop(0,'#e4e0ff');gr.addColorStop(1,'#6a5f9e');X.fillStyle=gr;X.beginPath();X.ellipse(0,-13,40,11,0,0,6.283);X.fill();X.strokeStyle='#2c2450';X.lineWidth=2.5;X.stroke();
+ for(let i=-3;i<=3;i++){X.fillStyle=(Math.floor(RT*6)+i)%2?'#7dff9a':'#ffe14d';X.beginPath();X.arc(i*10,-11+Math.abs(i)*.6,2.6,0,6.283);X.fill()}
+ // little alien body
+ gr=X.createRadialGradient(-6,-30,3,0,-24,22);gr.addColorStop(0,'#c8ffa8');gr.addColorStop(1,'#46c25a');X.fillStyle=gr;X.beginPath();X.ellipse(0,-24,15,10,0,0,6.283);X.fill();X.strokeStyle='#1f6e2c';X.lineWidth=2;X.stroke();
+ // head (big alien dome head)
+ gr=X.createRadialGradient(-6,-58,4,0,-48,30);gr.addColorStop(0,'#d2ffb4');gr.addColorStop(1,'#46c25a');X.fillStyle=gr;X.beginPath();X.ellipse(0,-49,25,21,0,0,6.283);X.fill();X.strokeStyle='#1f6e2c';X.lineWidth=2.5;X.stroke();
+ // antennae with glowing tips
+ for(const s of [-1,1]){const wv=Math.sin(RT*4+s)*2;X.strokeStyle='#1f6e2c';X.lineWidth=3;X.lineCap='round';X.beginPath();X.moveTo(s*8,-67);X.quadraticCurveTo(s*12,-80,s*18+wv,-86);X.stroke();
+  X.fillStyle='rgba(216,255,106,.45)';X.beginPath();X.arc(s*18+wv,-86,9,0,6.283);X.fill();X.fillStyle='#d8ff6a';X.beginPath();X.arc(s*18+wv,-86,5,0,6.283);X.fill();X.strokeStyle='#1f6e2c';X.lineWidth=1.5;X.stroke()}
+ // glass dome
+ X.fillStyle='rgba(190,230,255,.16)';X.beginPath();X.ellipse(0,-44,36,46,0,Math.PI,0);X.lineTo(36,-16);X.lineTo(-36,-16);X.closePath();X.fill();X.strokeStyle='rgba(220,240,255,.55)';X.lineWidth=2;X.stroke();
+ X.strokeStyle='rgba(255,255,255,.5)';X.lineWidth=3;X.beginPath();X.arc(0,-44,30,Math.PI*1.15,Math.PI*1.4);X.stroke();
  // eye turrets
  const lx=clamp((tgx-x)/120,-1,1),ly=-.7;
- for(const s of [-1,1]){const ex=s*16,ey=-52;X.fillStyle='#4cc45c';X.beginPath();X.arc(ex,ey,11,0,6.283);X.fill();X.strokeStyle='#1f6e2c';X.lineWidth=2;X.stroke();X.fillStyle='#fff';X.beginPath();X.arc(ex,ey,7.5,0,6.283);X.fill();
+ for(const s of [-1,1]){const ex=s*12,ey=-52;X.fillStyle='#14102a';X.beginPath();X.ellipse(ex,ey,9,11.5,s*-.45,0,6.283);X.fill();X.fillStyle='#e9ffd0';X.beginPath();X.ellipse(ex,ey,7,9,s*-.45,0,6.283);X.fill();
   if(K.emo==='ouch'||K.stun>0){X.strokeStyle='#222';X.lineWidth=2;X.beginPath();X.moveTo(ex-4,ey-4);X.lineTo(ex+4,ey+4);X.moveTo(ex+4,ey-4);X.lineTo(ex-4,ey+4);X.stroke()}
   else if(K.emo==='happy'){X.strokeStyle='#222';X.lineWidth=2.5;X.beginPath();X.arc(ex,ey+2,4,Math.PI*1.1,Math.PI*1.9);X.stroke()}
   else if(K.blinkT<.12){X.strokeStyle='#222';X.lineWidth=2.5;X.beginPath();X.moveTo(ex-5,ey);X.lineTo(ex+5,ey);X.stroke()}
@@ -405,7 +423,7 @@ function drawTongue(){const tg=G.tg;if(!tg)return;const K=G.kelly,sc=kSc();const
 const kSc=()=>clamp(GE.base/52,.8,1.12);
 // ===================== backgrounds =====================
 let bgCache=null,bgKey='';
-const BIOMES=[{n:'Garden',sky:['#8fd6ff','#e8f8ff'],h:['#7ccf6a','#4fa64a'],sun:'#fff3a0'},{n:'Swamp',sky:['#4d8f86','#b9e3c8'],h:['#3c7a52','#26573a'],sun:'#e8ffcf'},{n:'Canyon',sky:['#ff9a6b','#ffd9a0'],h:['#c86a43','#9a4630'],sun:'#fff0c0'},{n:'Crystal Cave',sky:['#2a1f4f','#5a3f8f'],h:['#3b2c6a','#251a48'],sun:null},{n:'Starry Night',sky:['#0d1640','#2b3a7a'],h:['#1c2a5a','#121c40'],sun:'#f4f0ff'}];
+const BIOMES=[{n:'Alien Meadow',sky:['#4a2f8f','#c9a8ff'],h:['#5fd06a','#2f8f3c'],sun:'#d6ff7a'},{n:'Swamp',sky:['#4d8f86','#b9e3c8'],h:['#3c7a52','#26573a'],sun:'#e8ffcf'},{n:'Canyon',sky:['#ff9a6b','#ffd9a0'],h:['#c86a43','#9a4630'],sun:'#fff0c0'},{n:'Crystal Cave',sky:['#2a1f4f','#5a3f8f'],h:['#3b2c6a','#251a48'],sun:null},{n:'Starry Night',sky:['#0d1640','#2b3a7a'],h:['#1c2a5a','#121c40'],sun:'#f4f0ff'}];
 function biome(){if(!G)return 0;return G.mode==='puzzle'?Math.floor(G.pi/5)%5:Math.floor((G.level-1)/2)%5}
 function drawBG(){const bi=state==='play'&&G?biome():0;const k=VW+'x'+VH+'_'+bi;if(!bgCache||bgKey!==k){bgKey=k;bgCache=document.createElement('canvas');bgCache.width=CV.width;bgCache.height=CV.height;const c=bgCache.getContext('2d');const B=BIOMES[bi];const W=bgCache.width,H=bgCache.height;
   let g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,B.sky[0]);g.addColorStop(1,B.sky[1]);c.fillStyle=g;c.fillRect(0,0,W,H);
@@ -514,7 +532,7 @@ function drawPanel(){const s=GE.s,P=G.panel;
   button('sfx',bx+bw/2+5,y,bw/2-5,46,save.sfx?'🔊 Sounds On':'🔈 Sounds Off',()=>{save.sfx=!save.sfx;persist();AU.apply()},{col:save.sfx?['#8fd6ff','#3a8fe0']:['#9a9aa8','#6c6c7a'],px:15});y+=56;
   button('howp',bx,y,bw,46,'❓ How to Play',()=>{howFrom='pause';howPage=0;state='howto'},{col:['#ffe48a','#f0a020']});y+=56;
   button('quit',bx,y,bw,46,'⌂ Main Menu',()=>{paused=false;toTitle()},{col:['#ff9ad0','#d4479a']});return}
- if(P==='over'){const p=panelBox('over',s,372,'Kelly got swamped!');let y=p.ty+4;const bx=p.x+24,bw=p.w-48;
+ if(P==='over'){const p=panelBox('over',s,372,'Swamped by aliens!');let y=p.ty+4;const bx=p.x+24,bw=p.w-48;
   infoLine('i1',bx,y,bw,'Score',G.score.toLocaleString(),'#ffe14d');y+=28;infoLine('i2',bx,y,bw,'Best',save.best.toLocaleString());y+=28;infoLine('i3',bx,y,bw,'Level reached',G.level+'');y+=28;infoLine('i4',bx,y,bw,'Best combo','×'+G.chainMax);y+=28;infoLine('i5',bx,y,bw,'Critters popped',G.popped+'');y+=34;
   if(G.newBest){reg('nb',bx,y-6,bw,22);outlined('★ NEW BEST SCORE! ★',bx+bw/2,y+5,16,'#ff9ad0','#3a1050',4);y+=24}
   button('again',bx,y,bw,50,'▶ Play Again',()=>startGame('endless'),{col:['#b6ff7a','#46b04a']});y+=60;button('menu',bx,y,bw,44,'⌂ Main Menu',toTitle,{col:['#ff9ad0','#d4479a']});return}
@@ -530,7 +548,7 @@ function drawPanel(){const s=GE.s,P=G.panel;
 let titleT=0,howPage=0,howFrom='title';const demo={tg:0,col:2};
 const fakeV=(ph=0,x=0)=>({sx:1,sy:1,open:0,blink:5,ph,x});
 function toTitle(){state='title';G=null;paused=false;MUS.track='title';AU.apply()}
-function logo(cx,y,sz){const word=['KELLY','CRUNCH'];word.forEach((w,li)=>{let px=sz*(li?1:.82);X.font=FONT(px);const tw=X.measureText(w).width;let x=cx-tw/2;for(let i=0;i<w.length;i++){const ch=w[i],cw=X.measureText(ch).width;const bob=Math.sin(RT*3+i*.7+li)*3;
+function logo(cx,y,sz){const word=['ALIEN','CRUNCH'];word.forEach((w,li)=>{let px=sz*(li?1:.82);X.font=FONT(px);const tw=X.measureText(w).width;let x=cx-tw/2;for(let i=0;i<w.length;i++){const ch=w[i],cw=X.measureText(ch).width;const bob=Math.sin(RT*3+i*.7+li)*3;
   const g=X.createLinearGradient(0,y+li*sz*.95-px/2,0,y+li*sz*.95+px/2);g.addColorStop(0,li?'#fff3a0':'#c6ffb0');g.addColorStop(1,li?'#ff7a2e':'#2fae4a');X.save();X.translate(x+cw/2,y+li*sz*.95+bob);X.rotate(Math.sin(RT*2+i)*.05);outlined(ch,0,0,px,g,'#2a1240',9);X.restore();x+=cw}})}
 function drawTitle(){const s=SB();menuBtns=[];
  const reserveH=50/SC; // top-left dock area (CSS px) kept free
@@ -540,7 +558,7 @@ function drawTitle(){const s=SB();menuBtns=[];
  if(midH>110){const cx=(s.l+s.r)/2;const cols=5,cw=Math.min(60,(s.r-s.l-40)/cols);const x0=cx-cw*cols/2;const yv=mid+12;X.fillStyle='#7a4a24';rr(x0-8,yv-8,cw*cols+16,10,5);X.fill();
   const demoCells=[[{k:'c',s:2,c:0,f:0},{k:'c',s:1,c:0,f:1}],[{k:'c',s:1,c:1,f:0},{k:'c',s:0,c:3,f:0}],[{k:'c',s:2,c:4,f:0},{k:'b',n:1}],[{k:'c',s:1,c:2,f:0},{k:'c',s:0,c:2,f:0}],[{k:'c',s:2,c:3,f:1},{k:'x'}]];
   const rh=Math.min(50,(midH-90)/2.4);const baseR=Math.min(cw,rh);GE=GE||{base:baseR};const oldGE=GE;GE={base:baseR,x0,colW:cw,top:yv,rowH:rh,dangerY:yv+rh*2.5,kY:by-12,s};
-  demoCells.forEach((col,c)=>col.forEach((cell,r)=>{const x=x0+cw*(c+.5),y=yv+rh*(r+.6)+Math.sin(RT*2+c)*2;X.strokeStyle='#2f7d33';X.lineWidth=3;X.beginPath();X.moveTo(x,yv);X.lineTo(x,y);X.stroke();drawCritter(cell,x,y,cell.k==='c'?baseR*[.3,.39,.48][cell.s]:baseR*.4,fakeV(c*1.3+r,x))}));
+  demoCells.forEach((col,c)=>col.forEach((cell,r)=>{const x=x0+cw*(c+.5),y=yv+rh*(r+.6)+Math.sin(RT*2+c)*2;X.strokeStyle='#2f7d33';X.lineWidth=3;X.beginPath();X.moveTo(x,yv);X.lineTo(x,y);X.stroke();drawCritter(cell,x,y,cell.k==='c'?baseR*[.23,.36,.47][cell.s]:baseR*.4,fakeV(c*1.3+r,x))}));
   const kx=x0+cw*(2.5+Math.sin(RT*.9)*1.6);drawKelly(kx,Math.min(by-12,yv+rh*2.5+90),clamp(baseR/52,.8,1.1));GE=oldGE}
  const bw=Math.min(280,s.r-s.l-40),bx=(s.l+s.r)/2-bw/2;
  button('endless',bx,by,bw,bh,'▶ Endless',()=>startGame('endless'),{col:['#b6ff7a','#46b04a'],sub:'Best '+(save.best||0).toLocaleString()+(save.bestCombo?'  ·  Best combo ×'+save.bestCombo:'')});
@@ -555,8 +573,8 @@ function drawLevels(){const s=SB();menuBtns=[];button('back',s.l+8,s.t+6,90,40,'
  const cols=5,gap=10;const cw=Math.min(66,(s.r-s.l-24-gap*4)/cols);const rows=Math.ceil(PUZ.length/cols);const ch=Math.min(cw,(s.b-s.t-80-gap*(rows-1))/rows);const x0=(s.l+s.r)/2-(cw*cols+gap*4)/2,y0=s.t+62;const un=lockedUpTo();
  for(let i=0;i<PUZ.length;i++){const c=i%cols,r=Math.floor(i/cols);const x=x0+c*(cw+gap),y=y0+r*(ch+gap);const lock=i>=un;const st=save.stars[i]||0;const tier=Math.floor(i/5);const tc=[['#b6ff7a','#46b04a'],['#8fd6ff','#3a8fe0'],['#ffd84d','#ff9f1c'],['#d6b4ff','#8a4ae0'],['#ff9ad0','#d4479a'],['#ffb07a','#e0602e']][tier%6];
   button('lv'+i,x,y,cw,ch,lock?'🔒':''+(i+1),()=>{if(!lock)startGame('puzzle',i)},{dis:lock,col:tc,r:14,px:Math.min(22,ch*.36),icon:lock?null:(bx,byy)=>{outlined(''+(i+1),bx,byy-ch*.1,Math.min(22,ch*.36),'#fff','#3a1a4a',4);X.font=FONT(Math.min(13,ch*.22));X.textAlign='center';X.fillStyle=st?'#fff6a0':'rgba(40,20,60,.5)';X.fillText('★'.repeat(st)+'☆'.repeat(3-st),bx,byy+ch*.26)}})}}
-const HOW=[{t:'Meet Kelly!',d:'Swipe left or right to move Kelly between columns. Tap anywhere to shoot her tongue up and grab the bottom critter. Tap again to spit it into the column above her. (Keyboard: ← → move, Space shoots.)',art:'kelly'},
- {t:'Feed the Food Chain',d:'Nibblers feed Munchers, and Munchers feed Chompers. Spit the wrong size and it just sticks on the bottom of the column.',art:'sizes'},
+const HOW=[{t:'Meet Your Alien!',d:'Swipe left or right to move your alien between columns. Tap anywhere to shoot its tongue up and grab the bottom critter. Tap again to spit it into the column above it. (Keyboard: ← → move, Space shoots.)',art:'kelly'},
+ {t:'Feed the Food Chain',d:'Round Nibblers feed triangle Munchers, and Munchers feed horned Chompers. Spit the wrong size and it just sticks on the bottom of the column.',art:'sizes'},
  {t:'Full Critters Pop',d:'A critter that has eaten gets puffy cheeks: it is FULL. Feed it once more, or feed it to a bigger critter, and it POPS!',art:'full'},
  {t:'Chain Reactions',d:'A pop spreads to touching critters of the same size AND color. Critters below climb up, and if they climb into a bigger critter it eats them. That’s a combo!',art:'chain'},
  {t:'Special Critters',d:'BOMB: eats any critter; feed it twice to blast everything around it.  SPIKY: never grab it! Pop a neighbor to clear it.  GEM ROCK: can’t be grabbed; pop a neighbor for a gem shower.',art:'special'},
@@ -567,7 +585,7 @@ function drawHow(){const s=SB();menuBtns=[];const P=HOW[howPage];button('hx',s.r
  reg('hp',s.l+8,s.t+6,140,40);outlined((howPage+1)+' / '+HOW.length,s.l+40,s.t+26,16,'#fff','#24103a',4);
  let px=28;while(textW(P.t,px)>s.r-s.l-24&&px>16)px-=2;reg('ht',s.l+12,s.t+54,s.r-s.l-24,px+10);outlined(P.t,(s.l+s.r)/2,s.t+59+px/2,px,'#ffe14d','#3a1050',6);
  const ay=s.t+70+px,ah=Math.min(270,(s.b-ay)*.42);reg('ha',s.l+12,ay,s.r-s.l-24,ah);X.fillStyle='rgba(20,10,40,.45)';rr(s.l+12,ay,s.r-s.l-24,ah,18);X.fill();
- const cx=(s.l+s.r)/2,cy=ay+ah/2,R=Math.min(34,ah*.17);const C=(k,sz,c,f,x,y,n)=>drawCritter(k==='c'?{k,s:sz,c,f}:{k,n:n||0},x,y,k==='c'?R*[.62,.8,1][sz]:R*.85,fakeV(x,x));const arrow=(x1,x2,y)=>{X.strokeStyle='#fff';X.lineWidth=3;X.beginPath();X.moveTo(x1,y);X.lineTo(x2,y);X.lineTo(x2-7,y-6);X.moveTo(x2,y);X.lineTo(x2-7,y+6);X.stroke()};
+ const cx=(s.l+s.r)/2,cy=ay+ah/2,R=Math.min(34,ah*.17);const C=(k,sz,c,f,x,y,n)=>drawCritter(k==='c'?{k,s:sz,c,f}:{k,n:n||0},x,y,k==='c'?R*[.5,.76,1][sz]:R*.85,fakeV(x,x));const arrow=(x1,x2,y)=>{X.strokeStyle='#fff';X.lineWidth=3;X.beginPath();X.moveTo(x1,y);X.lineTo(x2,y);X.lineTo(x2-7,y-6);X.moveTo(x2,y);X.lineTo(x2-7,y+6);X.stroke()};
  GE=GE||{base:52};
  if(P.art==='kelly'){const kx=cx+Math.sin(RT*1.5)*60;drawKelly(kx,ay+ah-12,clamp(ah/180,.7,1.05));C('c',1,1,0,cx,ay+R+10);X.strokeStyle='rgba(255,255,255,.6)';X.lineWidth=2;X.setLineDash([5,5]);X.beginPath();X.moveTo(cx-90,ay+ah-30);X.lineTo(cx+90,ay+ah-30);X.stroke();X.setLineDash([])}
  else if(P.art==='sizes'){C('c',0,2,0,cx-100,cy);arrow(cx-78,cx-38,cy);C('c',1,2,0,cx,cy);arrow(cx+30,cx+66,cy);C('c',2,2,0,cx+100,cy);X.font=FONT(12,800);X.fillStyle='#fff';X.textAlign='center';['Nibbler','Muncher','Chomper'].forEach((n,i)=>X.fillText(n,cx-100+i*100,cy+R*1.5+8))}
@@ -631,7 +649,7 @@ if('serviceWorker' in navigator&&location.protocol==='https:')addEventListener('
 #dockHint{position:fixed;z-index:61;display:none;box-sizing:border-box;background:rgba(10,10,20,.92);color:#fff;border:2px solid #fff;border-radius:12px;font:13px/1.3 system-ui,-apple-system,sans-serif;padding:7px 36px 7px 10px;top:0;left:0}#dockHint.inl{position:relative;margin:4px auto;max-width:320px}
 #dockHintX{position:absolute;right:3px;top:50%;margin-top:-15px;width:30px;height:30px;border-radius:15px;border:0;background:#fff;color:#000;font:bold 15px sans-serif;padding:0;cursor:pointer}
 #shareToast{position:fixed;z-index:62;display:none;box-sizing:border-box;height:34px;border-radius:17px;border:2px solid #fff;background:#1f9d55;color:#fff;font:bold 13px/30px system-ui,sans-serif;text-align:center;white-space:nowrap;pointer-events:none;overflow:hidden}
-#inst,#ios,#ioshint{display:none!important}#dkProbe{position:fixed;visibility:hidden;pointer-events:none;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}.dk.smp{position:relative;opacity:.62;text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:#ff5050}.dk.smp:after{content:'';position:absolute;left:5px;right:5px;top:50%;height:3px;margin-top:-1px;background:#ff3b3b;border-radius:2px;transform:rotate(-16deg);pointer-events:none}#dockHint.smpc{padding:9px 38px 10px 11px;font-size:14px}#dockHint.smpc b{color:#ffd84a}#smpBuy{display:block;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:8px 0 0;height:34px;border-radius:17px;border:2px solid #fff;background:#e0439a;color:#fff;font:bold 14px/30px system-ui,-apple-system,sans-serif;padding:0 14px;cursor:pointer;touch-action:manipulation}#smpBuy.off{background:#444;opacity:.85;cursor:default}#smpBack{position:fixed;inset:0;z-index:59;display:none;background:rgba(0,0,0,.55)}</style><div id="dock" role="toolbar" aria-label="Share and install"><button id="shareBtn" class="dk" type="button" aria-label="Share this game">🔗 Share</button><button id="instBtn" class="dk" type="button" aria-label="Install this game as an app">📲 Install</button></div><div id="dockHint" role="note">📲 On iPhone/iPad: tap Share <b>⬆</b> then “Add to Home Screen”.<button id="dockHintX" type="button" aria-label="Dismiss tip">✕</button></div><div id="shareToast" role="status" aria-live="polite">Link copied!</div><div id="dkProbe"></div><div id="smpBack"></div><script>(()=>{const SH={"title": "Kelly Crunch", "text": "Play Kelly Crunch — a free 8-bit game from five8nine Studios!", "url": "https://ploug76.github.io/kelly-crunch-589/"},ALLOW=[],INLINE=null,SHTXT="🔗 Share",SMP=window.__SAMPLE||null,PAYI="",PRICE="$1.99";const $=i=>document.getElementById(i);
+#inst,#ios,#ioshint{display:none!important}#dkProbe{position:fixed;visibility:hidden;pointer-events:none;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}.dk.smp{position:relative;opacity:.62;text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:#ff5050}.dk.smp:after{content:'';position:absolute;left:5px;right:5px;top:50%;height:3px;margin-top:-1px;background:#ff3b3b;border-radius:2px;transform:rotate(-16deg);pointer-events:none}#dockHint.smpc{padding:9px 38px 10px 11px;font-size:14px}#dockHint.smpc b{color:#ffd84a}#smpBuy{display:block;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:8px 0 0;height:34px;border-radius:17px;border:2px solid #fff;background:#e0439a;color:#fff;font:bold 14px/30px system-ui,-apple-system,sans-serif;padding:0 14px;cursor:pointer;touch-action:manipulation}#smpBuy.off{background:#444;opacity:.85;cursor:default}#smpBack{position:fixed;inset:0;z-index:59;display:none;background:rgba(0,0,0,.55)}</style><div id="dock" role="toolbar" aria-label="Share and install"><button id="shareBtn" class="dk" type="button" aria-label="Share this game">🔗 Share</button><button id="instBtn" class="dk" type="button" aria-label="Install this game as an app">📲 Install</button></div><div id="dockHint" role="note">📲 On iPhone/iPad: tap Share <b>⬆</b> then “Add to Home Screen”.<button id="dockHintX" type="button" aria-label="Dismiss tip">✕</button></div><div id="shareToast" role="status" aria-live="polite">Link copied!</div><div id="dkProbe"></div><div id="smpBack"></div><script>(()=>{const SH={"title": "Alien Crunch", "text": "Play Alien Crunch — a free 8-bit game from five8nine Studios!", "url": "https://ploug76.github.io/kelly-crunch-589/"},ALLOW=[],INLINE=null,SHTXT="🔗 Share",SMP=window.__SAMPLE||null,PAYI="",PRICE="$1.99";const $=i=>document.getElementById(i);
 if(SMP){SH.url=SH.url+'?sample='+encodeURIComponent(SMP);const h0=$('dockHint');h0.classList.add('smpc');h0.setAttribute('role','dialog');h0.innerHTML='<b>Sample version</b> — install the full game on your phone for '+PRICE+'<button id="smpBuy" type="button"'+(PAYI?'':' class="off" aria-disabled="true"')+'>'+(PAYI?'💳 Buy '+PRICE:'Checkout coming soon')+'</button><button id="dockHintX" type="button" aria-label="Close">✕</button>'}
 const bk=$('smpBack'),dock=$('dock'),sb=$('shareBtn'),ib=$('instBtn'),hint=$('dockHint'),hx=$('dockHintX'),toastEl=$('shareToast'),probe=$('dkProbe');
 if(INLINE){const a=document.querySelector(INLINE);if(a){a.after(dock);dock.after(hint)}dock.classList.add('inl');hint.classList.add('inl')}
