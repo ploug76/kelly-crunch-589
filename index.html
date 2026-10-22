@@ -539,16 +539,17 @@ function pill(k,x,y,w,h,draw){reg(k,x,y,w,h);X.fillStyle='rgba(20,10,40,.62)';rr
 function iconPause(x,y){X.fillStyle='#fff';X.strokeStyle='#3a1a4a';X.lineWidth=2;for(const d of [-6,3]){rr(x+d,y-9,6,18,2);X.fill();X.stroke()}}
 function iconSound(on){return(x,y)=>{X.fillStyle='#fff';X.strokeStyle='#3a1a4a';X.lineWidth=2;X.beginPath();X.moveTo(x-11,y-5);X.lineTo(x-5,y-5);X.lineTo(x+2,y-11);X.lineTo(x+2,y+11);X.lineTo(x-5,y+5);X.lineTo(x-11,y+5);X.closePath();X.fill();X.stroke();
  X.strokeStyle='#fff';X.lineWidth=2.5;if(on){X.beginPath();X.arc(x+3,y,7,-.9,.9);X.stroke();X.beginPath();X.arc(x+3,y,12,-.9,.9);X.stroke()}else{X.strokeStyle='#ff4f6e';X.lineWidth=3;X.beginPath();X.moveTo(x+6,y-6);X.lineTo(x+14,y+6);X.moveTo(x+14,y-6);X.lineTo(x+6,y+6);X.stroke()}}}
-function topRight(s,withPause){const y=s.t+6;if(withPause)button('pause',s.r-6-44,y,44,40,'',togglePause,{icon:iconPause,col:['#8fd6ff','#3a8fe0']});button('mute',s.r-54-44,y,44,40,'',toggleMute,{icon:iconSound(!save.muted),col:['#8fd6ff','#3a8fe0']})}
+// KCBTN44b: sound/pause 46x46 (>=44 CSS px on phones), same corner, top edge 2 higher so row 2 stays clear
+function topRight(s,withPause){const y=s.t+4;if(withPause)button('pause',s.r-6-46,y,46,46,'',togglePause,{icon:iconPause,col:['#8fd6ff','#3a8fe0']});button('mute',s.r-56-46,y,46,46,'',toggleMute,{icon:iconSound(!save.muted),col:['#8fd6ff','#3a8fe0']})}
 // KCBTN44: puzzle Undo/Hint row is 46 logical px tall (>=44 CSS px on phones); the tip lane moves down 6 to make room
 const PBH=46;
 function drawHUD(){const s=GE.s,y1=s.t+6,y2=s.t+52;
  pill('score',s.l+8,y1,150,40,(x,y,w,h)=>{X.font=FONT(11,800);X.fillStyle='#ffd84d';X.textAlign='left';X.textBaseline='middle';X.fillText('SCORE',x+14,y+12);outlined(G.shown.toLocaleString(),x+14,y+27,19,'#fff','#24103a',4,'left')});
  const mw=s.r-108-(s.l+166);
  if(G.mode==='endless'){if(mw>=60)pill('level',s.l+166,y1,mw,40,(x,y,w,h)=>{X.font=FONT(11,800);X.fillStyle='#b6ff7a';X.textAlign='center';X.textBaseline='middle';X.fillText('LEVEL · '+BIOMES[biome()].n.toUpperCase(),x+w/2,y+12);outlined(G.level+'  ★ '+Math.max(save.best,G.score).toLocaleString(),x+w/2,y+27,15,'#fff','#24103a',4)});
-  pill('feast',s.l+8,y2,150,36,(x,y,w,h)=>{drawGem(x+17,y+h/2,8,(RT*2|0)%5,RT,true);X.fillStyle='rgba(0,0,0,.45)';rr(x+32,y+11,w-44,14,7);X.fill();const p=clamp(G.gemsN/G.need,0,1);const g=X.createLinearGradient(x+32,0,x+w-12,0);g.addColorStop(0,'#ff5fa2');g.addColorStop(1,'#ffd84d');X.fillStyle=g;rr(x+32,y+11,(w-44)*p,14,7);X.fill();X.font=FONT(10,900);X.fillStyle='#fff';X.textAlign='center';X.fillText('FEAST '+G.gemsN+'/'+G.need,x+32+(w-44)/2,y+18.5)});
-  const nw=Math.max(70,s.r-6-100-8-(s.l+166));pill('nextrow',s.l+166,y2,nw,36,(x,y,w,h)=>{const I=pushInterval(),left=Math.max(0,I-G.pushT);X.font=FONT(10,900);X.fillStyle=left<1.6?'#ff8a8a':'#b6ff7a';X.textAlign='center';X.textBaseline='middle';X.fillText('NEXT ROW',x+w/2,y+11);outlined(left.toFixed(1)+'s',x+w/2,y+25,14,'#fff','#24103a',4)});
-  button('burp',s.r-6-100,y2,100,36,'BURP ×'+G.burps,useBurp,{dis:G.burps<=0||busy(),col:['#ff9ad0','#d4479a'],px:15})}
+  pill('feast',s.l+8,y2,150,PBH,(x,y,w,h)=>{y+=(h-36)/2;h=36;drawGem(x+17,y+h/2,8,(RT*2|0)%5,RT,true);X.fillStyle='rgba(0,0,0,.45)';rr(x+32,y+11,w-44,14,7);X.fill();const p=clamp(G.gemsN/G.need,0,1);const g=X.createLinearGradient(x+32,0,x+w-12,0);g.addColorStop(0,'#ff5fa2');g.addColorStop(1,'#ffd84d');X.fillStyle=g;rr(x+32,y+11,(w-44)*p,14,7);X.fill();X.font=FONT(10,900);X.fillStyle='#fff';X.textAlign='center';X.fillText('FEAST '+G.gemsN+'/'+G.need,x+32+(w-44)/2,y+18.5)});
+  const nw=Math.max(70,s.r-6-100-8-(s.l+166));pill('nextrow',s.l+166,y2,nw,PBH,(x,y,w,h)=>{y+=(h-36)/2;h=36;const I=pushInterval(),left=Math.max(0,I-G.pushT);X.font=FONT(10,900);X.fillStyle=left<1.6?'#ff8a8a':'#b6ff7a';X.textAlign='center';X.textBaseline='middle';X.fillText('NEXT ROW',x+w/2,y+11);outlined(left.toFixed(1)+'s',x+w/2,y+25,14,'#fff','#24103a',4)});
+  button('burp',s.r-6-100,y2,100,PBH,'BURP ×'+G.burps,useBurp,{dis:G.burps<=0||busy(),col:['#ff9ad0','#d4479a'],px:15})}
  else{if(mw>=60)pill('pz',s.l+166,y1,mw,40,(x,y,w,h)=>{X.font=FONT(11,800);X.fillStyle='#b6ff7a';X.textAlign='center';X.textBaseline='middle';X.fillText('PUZZLE '+(G.pi+1)+' / '+PUZ.length,x+w/2,y+12);outlined('PAR '+G.par+'  '+'★'.repeat(save.stars[G.pi]||0)+'☆'.repeat(3-(save.stars[G.pi]||0)),x+w/2,y+27,14,'#fff','#24103a',4)});
   pill('moves',s.l+8,y2,150,PBH,(x,y,w,h)=>{const left=G.limit-G.moves;X.font=FONT(10,900);X.fillStyle=left<=1?'#ff8a8a':'#ffd84d';X.textAlign='left';X.textBaseline='middle';X.fillText('MOVES LEFT',x+14,y+h/2);outlined(left+'',x+w-24,y+h/2,20,'#fff','#24103a',4)});
   button('undo',s.l+166,y2,100,PBH,'↶ Undo',undo,{dis:!G.undo.length||busy(),col:['#b6ff7a','#46b04a'],px:15});
@@ -603,7 +604,7 @@ function drawTitle(){const s=SB();menuBtns=[];
  button('puzzles',bx,by+bh+gap,bw,bh,'🧩 Puzzles',()=>{state='levels'},{col:['#ffd84d','#ff9f1c'],sub:tot+' / '+PUZ.length*3+' stars'});
  button('how',bx,by+(bh+gap)*2,bw,bh,'❓ How to Play',()=>{howFrom='title';howPage=0;state='howto'},{col:['#8fd6ff','#3a8fe0']});
  reg('foot',(s.l+s.r)/2-130,s.b-26,260,22);menuBtns.push({k:'foot',x:(s.l+s.r)/2-130,y:s.b-26,w:260,h:22,fn:()=>{},dis:true});X.font=FONT(16,800);X.fillStyle='rgba(255,255,255,.85)';X.textAlign='center';X.textBaseline='middle';X.fillText("A five8nine Studios original",(s.l+s.r)/2,s.b-15);
- button('mute',s.r-6-44,s.t+6,44,40,'',toggleMute,{icon:iconSound(!save.muted),col:['#8fd6ff','#3a8fe0']})}
+ button('mute',s.r-6-46,s.t+3,46,46,'',toggleMute,{icon:iconSound(!save.muted),col:['#8fd6ff','#3a8fe0']})}
 function lockedUpTo(){let n=1;for(let i=0;i<PUZ.length;i++)if(save.stars[i])n=i+2;return Math.min(PUZ.length,Math.max(n,5))}
 // KCPAGE: 30 puzzles per page (5x6) so every button stays at least 44px tall with 130 puzzles
 const LV_PER=30;let lvPage=-1;
