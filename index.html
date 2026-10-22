@@ -107,7 +107,7 @@ const AU={ctx:null,m:null,sg:null,mg:null,nb:null,
   this.m=c.createGain();this.m.connect(c.destination);this.sg=c.createGain();this.sg.connect(this.m);this.mg=c.createGain();this.mg.connect(this.m);
   const comp=c.createDynamicsCompressor();this.m.disconnect();this.m.connect(comp);comp.connect(c.destination);
   const n=c.createBuffer(1,c.sampleRate*1,c.sampleRate),d=n.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;this.nb=n;this.apply()}catch(e){this.ctx=null}},
- apply(){if(!this.ctx)return;const t=this.ctx.currentTime;this.m.gain.setTargetAtTime(save.muted?0:1,t,.02);this.sg.gain.setTargetAtTime(save.sfx?.75:0,t,.02);this.mg.gain.setTargetAtTime(save.music&&!paused?.30:0,t,.05)},
+ apply(){if(!this.ctx)return;const t=this.ctx.currentTime;this.m.gain.setTargetAtTime(save.muted?0:1,t,.02);this.sg.gain.setTargetAtTime(save.sfx?.75:0,t,.02);this.mg.gain.setTargetAtTime(save.music&&!paused?.15:0,t,.05)},
  unlock(){this.init();if(this.ctx&&this.ctx.state!=='running'&&!hidden)this.ctx.resume().catch(()=>{})},
  tone(f,d,type='square',v=.2,f2=null,dl=0,dest=null){const c=this.ctx;if(!c)return;const t=c.currentTime+dl,o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.setValueAtTime(f,t);if(f2)o.frequency.exponentialRampToValueAtTime(Math.max(20,f2),t+d);
   g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(v,t+.006);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(dest||this.sg);o.start(t);o.stop(t+d+.03)},
@@ -163,7 +163,7 @@ const SIZES=['Nibbler','Muncher','Chomper'];
 const MAXR_E=10,MAXR_P=9,NC_E=7;
 const COMBO_WORDS=['','Crunchy!','Double Crunch!','Triple Crunch!','Super Crunch!','Mega Munch!','Ultra Munch!','KELLY CRUNCH!!'];
 const PUZ=PUZZLES; // generated + verified by solver (see build)
-const TIPS={0:'Swipe to move Kelly. Tap to grab the bottom critter, tap again to spit it!',1:'Feed a smaller critter to the next size up: Nibbler ➜ Muncher ➜ Chomper.',2:'A critter that has eaten is FULL (puffy cheeks). Feed it again and it POPS!',3:'Feed a FULL critter to a bigger one for a Food Chain pop!',4:'Pops spread to touching critters of the same size AND color.',10:'BOMBS eat any critter. Feed a bomb twice to blast everything around it!',15:'Never grab SPIKY critters! Pop something next to them to clear them.',20:'Gem rocks can’t be grabbed. Pop a critter beside one for a gem shower!'};
+const TIPS={0:'Swipe to move Kelly. Tap to grab the bottom critter, tap again to spit it!',1:'Feed a smaller critter to the next size up: Nibbler (round) ➜ Muncher (triangle) ➜ Chomper (horns & arms).',2:'A critter that has eaten is FULL (puffy cheeks). Feed it again and it POPS!',3:'Feed a FULL critter to a bigger one for a Food Chain pop!',4:'Pops spread to touching critters of the same size AND color.',10:'BOMBS eat any critter. Feed a bomb twice to blast everything around it!',15:'Never grab SPIKY critters! Pop something next to them to clear them.',20:'Gem rocks can’t be grabbed. Pop a critter beside one for a gem shower!'};
 let V=new Map(); // visual state per cell id
 function newVis(cell,x,y){const v={x,y,vx:0,vy:0,sx:1,sy:1,svx:0,svy:0,ph:Math.random()*6.28,open:0,blink:rand(1,4),look:0,shiver:0,eaten:null,bump:0};V.set(cell.id,v);return v}
 function geo(){const s=SB();const NC=G.NC,MAXR=G.MAXR;const tip=G.mode==='puzzle'?44:0;const top=s.t+122+tip;const bottomPad=106;
@@ -172,7 +172,7 @@ function geo(){const s=SB();const NC=G.NC,MAXR=G.MAXR;const tip=G.mode==='puzzle
  return{x0,colW,top,rowH,dangerY,base,kY:Math.min(s.b-14,dangerY+bottomPad-6),s,tip}}
 let GE=null;
 const colX=c=>GE.x0+GE.colW*(c+.5),rowY=r=>GE.top+GE.rowH*(r+.5);
-const radius=cell=>cell.k==='c'?GE.base*[.30,.39,.48][cell.s]:GE.base*.40;
+const radius=cell=>cell.k==='c'?GE.base*[.23,.36,.47][cell.s]:GE.base*.40;
 function startGame(mode,pi=0){AU.unlock();V=new Map();parts.length=0;gems.length=0;labels.length=0;
  G={mode,pi,NC:NC_E,MAXR:MAXR_E,B:[],kelly:{col:3,x:0,vx:0,stun:0,mouth:0,emo:'',emoT:0,squash:0,bob:0,look:0,blinkT:2,hop:0},hold:null,tg:null,flights:[],res:null,queue:[],
   score:0,shown:0,level:1,gemsN:0,need:25,pushT:0,burps:1,chainMax:0,popped:0,moves:0,limit:0,par:0,undo:[],t:0,panel:null,panelT:0,shake:0,hitstop:0,hint:null,warnT:0,danger:0,newBest:false,ann:null,tipT:0,overT:0,lastPush:0,clearBonus:0};
@@ -327,21 +327,39 @@ function eyes(R,ex,ey,er,v,kind){const K=G?G.kelly:null;const look=K?clamp((K.x-
   if(bl){X.strokeStyle='#222';X.lineWidth=er*.28;X.beginPath();X.moveTo(x-er*.7,y);X.quadraticCurveTo(x,y+er*.5,x+er*.7,y);X.stroke();continue}
   const px=x+look*er*.38,py=y+er*.32;X.fillStyle='#1d1530';X.beginPath();X.arc(px,py,er*.52,0,6.283);X.fill();X.fillStyle='#fff';X.beginPath();X.arc(px-er*.18,py-er*.2,er*.18,0,6.283);X.fill()}
  if(kind==='angry'){X.strokeStyle='#2a1c38';X.lineWidth=er*.35;X.lineCap='round';X.beginPath();X.moveTo(-ex-er*.8,ey-er*1.2);X.lineTo(-ex+er*.7,ey-er*.6);X.moveTo(ex+er*.8,ey-er*1.2);X.lineTo(ex-er*.7,ey-er*.6);X.stroke()}}
+function alienEyes(P,er,v,kind){const K=G?G.kelly:null;const look=K?clamp((K.x-v.x)/160,-1,1):Math.sin(RT+v.ph)*.6;const bl=v.blink<.12;
+ for(const [x,y] of P){X.fillStyle='#e9ffd0';X.beginPath();X.ellipse(x,y,er*1.05,er*1.2,0,0,6.283);X.fill();X.strokeStyle='rgba(0,0,0,.6)';X.lineWidth=Math.max(1,er*.14);X.stroke();
+  if(bl){X.strokeStyle='#222';X.lineWidth=er*.28;X.beginPath();X.moveTo(x-er*.7,y);X.quadraticCurveTo(x,y+er*.5,x+er*.7,y);X.stroke();continue}
+  const px=x+look*er*.3,py=y+er*.2;X.fillStyle='#14102a';X.beginPath();X.ellipse(px,py,er*.62,er*.8,0,0,6.283);X.fill();X.fillStyle='#7dff9a';X.beginPath();X.ellipse(px,py,er*.18,er*.5,0,0,6.283);X.fill();X.fillStyle='#fff';X.beginPath();X.arc(px-er*.25,py-er*.35,er*.18,0,6.283);X.fill()}
+ if(kind==='angry'){X.strokeStyle='#2a1c38';X.lineWidth=er*.35;X.lineCap='round';const a=P[0],b=P[P.length-1];X.beginPath();X.moveTo(a[0]-er*.9,a[1]-er*1.5);X.lineTo(a[0]+er*.6,a[1]-er*1.0);X.moveTo(b[0]+er*.9,b[1]-er*1.5);X.lineTo(b[0]-er*.6,b[1]-er*1.0);X.stroke()}}
 function drawCritter(cell,x,y,R,v,alpha=1){X.save();X.translate(x,y);const wob=cell.f?Math.sin(RT*9+v.ph)*.05:0;X.scale(v.sx*(1+wob),v.sy*(1-wob));if(alpha<1)X.globalAlpha=alpha;
  const lw=Math.max(1.8,R*.09);
  if(cell.k==='c'){const C=COLORS[cell.c],s=cell.s,full=cell.f;const RR=R*(full?1.08:1);
-  // ears / horns / antennae
-  X.lineWidth=lw;X.strokeStyle=C.d;
-  if(s===0){X.lineCap='round';for(const sx of [-1,1]){X.beginPath();X.moveTo(sx*RR*.3,-RR*.8);X.quadraticCurveTo(sx*RR*.5,-RR*1.4,sx*RR*.75+Math.sin(RT*4+v.ph)*2,-RR*1.45);X.stroke();X.fillStyle=C.l;X.beginPath();X.arc(sx*RR*.75+Math.sin(RT*4+v.ph)*2,-RR*1.45,RR*.18,0,6.283);X.fill();X.stroke()}}
-  else if(s===1){for(const sx of [-1,1]){X.fillStyle=C.b;X.beginPath();X.arc(sx*RR*.68,-RR*.68,RR*.3,0,6.283);X.fill();X.stroke();X.fillStyle=C.l;X.beginPath();X.arc(sx*RR*.68,-RR*.68,RR*.15,0,6.283);X.fill()}}
-  else{for(const sx of [-1,1]){X.fillStyle='#fff3d6';X.beginPath();X.moveTo(sx*RR*.35,-RR*.82);X.quadraticCurveTo(sx*RR*.95,-RR*1.0,sx*RR*.92,-RR*1.42);X.quadraticCurveTo(sx*RR*.7,-RR*1.0,sx*RR*.62,-RR*.62);X.closePath();X.fill();X.strokeStyle='#8a6a3a';X.stroke()}}
+  // ALIEN bodies: size 0 = round blob (1 eye, 1 antenna), 1 = TRIANGLE (2 eyes, 2 antennae), 2 = big brute with ARMS, LEGS, HORNS (3 eyes)
+  X.lineWidth=lw;X.strokeStyle=C.d;X.lineCap='round';
+  const glow=(x,y,r)=>{X.fillStyle='rgba(200,255,120,.45)';X.beginPath();X.arc(x,y,r*1.9,0,6.283);X.fill();X.fillStyle='#d8ff6a';X.beginPath();X.arc(x,y,r,0,6.283);X.fill();X.strokeStyle=C.d;X.stroke()};
+  const wv=Math.sin(RT*4+v.ph)*RR*.08;
+  if(s===0){X.beginPath();X.moveTo(0,-RR*.9);X.quadraticCurveTo(RR*.25,-RR*1.3,wv,-RR*1.5);X.stroke();glow(wv,-RR*1.5,RR*.2)}
+  else if(s===1){for(const sx of [-1,1]){X.strokeStyle=C.d;X.beginPath();X.moveTo(sx*RR*.12,-RR*.95);X.quadraticCurveTo(sx*RR*.3,-RR*1.4,sx*RR*.55+wv,-RR*1.45);X.stroke();glow(sx*RR*.55+wv,-RR*1.45,RR*.15)}}
+  else{// legs
+   X.fillStyle=C.d;for(const sx of [-1,1]){rr(sx*RR*.5-RR*.17,RR*.6,RR*.34,RR*.5,RR*.12);X.fill();X.beginPath();X.ellipse(sx*RR*.5,RR*1.08,RR*.26,RR*.12,0,0,6.283);X.fill()}
+   // arms (waving)
+   for(const sx of [-1,1]){const a=Math.sin(RT*5+v.ph+sx)*.35;X.strokeStyle=C.d;X.lineWidth=RR*.2;X.beginPath();X.moveTo(sx*RR*.75,RR*.05);X.quadraticCurveTo(sx*RR*1.15,RR*(-.1+a*.3),sx*RR*1.12,RR*(-.45+a*.4));X.stroke();
+    X.fillStyle=C.b;X.beginPath();X.arc(sx*RR*1.12,RR*(-.5+a*.4),RR*.16,0,6.283);X.fill();X.lineWidth=lw;X.stroke()}
+   // horns
+   for(const sx of [-1,1]){X.fillStyle='#fff3d6';X.beginPath();X.moveTo(sx*RR*.3,-RR*.72);X.quadraticCurveTo(sx*RR*.95,-RR*.95,sx*RR*.9,-RR*1.4);X.quadraticCurveTo(sx*RR*.65,-RR*1.0,sx*RR*.62,-RR*.55);X.closePath();X.fill();X.strokeStyle='#8a6a3a';X.lineWidth=lw;X.stroke()}}
   // body
   const gr=X.createRadialGradient(-RR*.35,-RR*.4,RR*.1,0,0,RR*1.1);gr.addColorStop(0,C.l);gr.addColorStop(.55,C.b);gr.addColorStop(1,C.d);
-  X.fillStyle=gr;fuzzPath(RR,[9,12,15][s],RR*[.10,.13,.14][s]);X.fill();X.strokeStyle=C.d;X.lineWidth=lw;X.stroke();
-  X.fillStyle='rgba(255,255,255,.28)';X.beginPath();X.ellipse(0,RR*.42,RR*.58,RR*.42,0,0,6.283);X.fill();
-  symbol(cell.c,0,RR*.64,RR*.15);
+  X.fillStyle=gr;X.beginPath();
+  if(s===0){X.arc(0,0,RR,0,6.283)}
+  else if(s===1){const P=[[0,-RR*1.12],[RR*1.08,RR*.82],[-RR*1.08,RR*.82]];const rad=RR*.22;X.moveTo((P[0][0]+P[2][0])/2,(P[0][1]+P[2][1])/2);for(let k=0;k<3;k++){const a=P[k],b=P[(k+1)%3];X.arcTo(a[0],a[1],b[0],b[1],rad)}X.closePath()}
+  else{rr(-RR*.88,-RR*.82,RR*1.76,RR*1.52,RR*.55)}
+  X.fill();X.strokeStyle=C.d;X.lineWidth=lw;X.stroke();
+  X.fillStyle='rgba(255,255,255,.22)';X.beginPath();X.ellipse(0,RR*(s===1?.5:.42),RR*(s===1?.5:.55),RR*.28,0,0,6.283);X.fill();
+  symbol(cell.c,s===1?0:0,s===0?RR*.66:s===1?-RR*.48:RR*.5,RR*(s===1?.13:.14));
+  if(s===2){X.fillStyle='rgba(0,0,0,.18)';for(const sx of [-1,1]){X.beginPath();X.arc(sx*RR*.55,RR*.35,RR*.07,0,6.283);X.fill()}}
   // face
-  const er=RR*[.27,.24,.21][s];eyes(RR,RR*[.33,.36,.38][s],-RR*.14,er,v,s===2&&!full?'angry':'');
+  if(s===1)X.translate(0,RR*.12);if(s===0)alienEyes([[0,-RR*.12]],RR*.42,v,'');else if(s===1)alienEyes([[-RR*.3,-RR*.12],[RR*.3,-RR*.12]],RR*.22,v,'');else alienEyes([[-RR*.42,-RR*.2],[0,-RR*.42],[RR*.42,-RR*.2]],RR*.19,v,full?'':'angry');
   const op=v.open;
   if(full){X.fillStyle='rgba(255,120,150,.55)';for(const sx of [-1,1]){X.beginPath();X.ellipse(sx*RR*.62,RR*.18,RR*.22,RR*.16,0,0,6.283);X.fill()}
    X.strokeStyle='#3a1630';X.lineWidth=lw*.9;X.lineCap='round';X.beginPath();X.moveTo(-RR*.22,RR*.3);X.quadraticCurveTo(-RR*.11,RR*.38,0,RR*.3);X.quadraticCurveTo(RR*.11,RR*.38,RR*.22,RR*.3);X.stroke();
@@ -540,7 +558,7 @@ function drawTitle(){const s=SB();menuBtns=[];
  if(midH>110){const cx=(s.l+s.r)/2;const cols=5,cw=Math.min(60,(s.r-s.l-40)/cols);const x0=cx-cw*cols/2;const yv=mid+12;X.fillStyle='#7a4a24';rr(x0-8,yv-8,cw*cols+16,10,5);X.fill();
   const demoCells=[[{k:'c',s:2,c:0,f:0},{k:'c',s:1,c:0,f:1}],[{k:'c',s:1,c:1,f:0},{k:'c',s:0,c:3,f:0}],[{k:'c',s:2,c:4,f:0},{k:'b',n:1}],[{k:'c',s:1,c:2,f:0},{k:'c',s:0,c:2,f:0}],[{k:'c',s:2,c:3,f:1},{k:'x'}]];
   const rh=Math.min(50,(midH-90)/2.4);const baseR=Math.min(cw,rh);GE=GE||{base:baseR};const oldGE=GE;GE={base:baseR,x0,colW:cw,top:yv,rowH:rh,dangerY:yv+rh*2.5,kY:by-12,s};
-  demoCells.forEach((col,c)=>col.forEach((cell,r)=>{const x=x0+cw*(c+.5),y=yv+rh*(r+.6)+Math.sin(RT*2+c)*2;X.strokeStyle='#2f7d33';X.lineWidth=3;X.beginPath();X.moveTo(x,yv);X.lineTo(x,y);X.stroke();drawCritter(cell,x,y,cell.k==='c'?baseR*[.3,.39,.48][cell.s]:baseR*.4,fakeV(c*1.3+r,x))}));
+  demoCells.forEach((col,c)=>col.forEach((cell,r)=>{const x=x0+cw*(c+.5),y=yv+rh*(r+.6)+Math.sin(RT*2+c)*2;X.strokeStyle='#2f7d33';X.lineWidth=3;X.beginPath();X.moveTo(x,yv);X.lineTo(x,y);X.stroke();drawCritter(cell,x,y,cell.k==='c'?baseR*[.23,.36,.47][cell.s]:baseR*.4,fakeV(c*1.3+r,x))}));
   const kx=x0+cw*(2.5+Math.sin(RT*.9)*1.6);drawKelly(kx,Math.min(by-12,yv+rh*2.5+90),clamp(baseR/52,.8,1.1));GE=oldGE}
  const bw=Math.min(280,s.r-s.l-40),bx=(s.l+s.r)/2-bw/2;
  button('endless',bx,by,bw,bh,'▶ Endless',()=>startGame('endless'),{col:['#b6ff7a','#46b04a'],sub:'Best '+(save.best||0).toLocaleString()+(save.bestCombo?'  ·  Best combo ×'+save.bestCombo:'')});
@@ -556,7 +574,7 @@ function drawLevels(){const s=SB();menuBtns=[];button('back',s.l+8,s.t+6,90,40,'
  for(let i=0;i<PUZ.length;i++){const c=i%cols,r=Math.floor(i/cols);const x=x0+c*(cw+gap),y=y0+r*(ch+gap);const lock=i>=un;const st=save.stars[i]||0;const tier=Math.floor(i/5);const tc=[['#b6ff7a','#46b04a'],['#8fd6ff','#3a8fe0'],['#ffd84d','#ff9f1c'],['#d6b4ff','#8a4ae0'],['#ff9ad0','#d4479a'],['#ffb07a','#e0602e']][tier%6];
   button('lv'+i,x,y,cw,ch,lock?'🔒':''+(i+1),()=>{if(!lock)startGame('puzzle',i)},{dis:lock,col:tc,r:14,px:Math.min(22,ch*.36),icon:lock?null:(bx,byy)=>{outlined(''+(i+1),bx,byy-ch*.1,Math.min(22,ch*.36),'#fff','#3a1a4a',4);X.font=FONT(Math.min(13,ch*.22));X.textAlign='center';X.fillStyle=st?'#fff6a0':'rgba(40,20,60,.5)';X.fillText('★'.repeat(st)+'☆'.repeat(3-st),bx,byy+ch*.26)}})}}
 const HOW=[{t:'Meet Kelly!',d:'Swipe left or right to move Kelly between columns. Tap anywhere to shoot her tongue up and grab the bottom critter. Tap again to spit it into the column above her. (Keyboard: ← → move, Space shoots.)',art:'kelly'},
- {t:'Feed the Food Chain',d:'Nibblers feed Munchers, and Munchers feed Chompers. Spit the wrong size and it just sticks on the bottom of the column.',art:'sizes'},
+ {t:'Feed the Food Chain',d:'Round Nibblers feed triangle Munchers, and Munchers feed horned Chompers. Spit the wrong size and it just sticks on the bottom of the column.',art:'sizes'},
  {t:'Full Critters Pop',d:'A critter that has eaten gets puffy cheeks: it is FULL. Feed it once more, or feed it to a bigger critter, and it POPS!',art:'full'},
  {t:'Chain Reactions',d:'A pop spreads to touching critters of the same size AND color. Critters below climb up, and if they climb into a bigger critter it eats them. That’s a combo!',art:'chain'},
  {t:'Special Critters',d:'BOMB: eats any critter; feed it twice to blast everything around it.  SPIKY: never grab it! Pop a neighbor to clear it.  GEM ROCK: can’t be grabbed; pop a neighbor for a gem shower.',art:'special'},
@@ -567,7 +585,7 @@ function drawHow(){const s=SB();menuBtns=[];const P=HOW[howPage];button('hx',s.r
  reg('hp',s.l+8,s.t+6,140,40);outlined((howPage+1)+' / '+HOW.length,s.l+40,s.t+26,16,'#fff','#24103a',4);
  let px=28;while(textW(P.t,px)>s.r-s.l-24&&px>16)px-=2;reg('ht',s.l+12,s.t+54,s.r-s.l-24,px+10);outlined(P.t,(s.l+s.r)/2,s.t+59+px/2,px,'#ffe14d','#3a1050',6);
  const ay=s.t+70+px,ah=Math.min(270,(s.b-ay)*.42);reg('ha',s.l+12,ay,s.r-s.l-24,ah);X.fillStyle='rgba(20,10,40,.45)';rr(s.l+12,ay,s.r-s.l-24,ah,18);X.fill();
- const cx=(s.l+s.r)/2,cy=ay+ah/2,R=Math.min(34,ah*.17);const C=(k,sz,c,f,x,y,n)=>drawCritter(k==='c'?{k,s:sz,c,f}:{k,n:n||0},x,y,k==='c'?R*[.62,.8,1][sz]:R*.85,fakeV(x,x));const arrow=(x1,x2,y)=>{X.strokeStyle='#fff';X.lineWidth=3;X.beginPath();X.moveTo(x1,y);X.lineTo(x2,y);X.lineTo(x2-7,y-6);X.moveTo(x2,y);X.lineTo(x2-7,y+6);X.stroke()};
+ const cx=(s.l+s.r)/2,cy=ay+ah/2,R=Math.min(34,ah*.17);const C=(k,sz,c,f,x,y,n)=>drawCritter(k==='c'?{k,s:sz,c,f}:{k,n:n||0},x,y,k==='c'?R*[.5,.76,1][sz]:R*.85,fakeV(x,x));const arrow=(x1,x2,y)=>{X.strokeStyle='#fff';X.lineWidth=3;X.beginPath();X.moveTo(x1,y);X.lineTo(x2,y);X.lineTo(x2-7,y-6);X.moveTo(x2,y);X.lineTo(x2-7,y+6);X.stroke()};
  GE=GE||{base:52};
  if(P.art==='kelly'){const kx=cx+Math.sin(RT*1.5)*60;drawKelly(kx,ay+ah-12,clamp(ah/180,.7,1.05));C('c',1,1,0,cx,ay+R+10);X.strokeStyle='rgba(255,255,255,.6)';X.lineWidth=2;X.setLineDash([5,5]);X.beginPath();X.moveTo(cx-90,ay+ah-30);X.lineTo(cx+90,ay+ah-30);X.stroke();X.setLineDash([])}
  else if(P.art==='sizes'){C('c',0,2,0,cx-100,cy);arrow(cx-78,cx-38,cy);C('c',1,2,0,cx,cy);arrow(cx+30,cx+66,cy);C('c',2,2,0,cx+100,cy);X.font=FONT(12,800);X.fillStyle='#fff';X.textAlign='center';['Nibbler','Muncher','Chomper'].forEach((n,i)=>X.fillText(n,cx-100+i*100,cy+R*1.5+8))}
