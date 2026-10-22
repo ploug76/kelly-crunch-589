@@ -90,8 +90,15 @@ try{Object.assign(save,JSON.parse(localStorage.getItem(SAVEK)||'{}'))}catch(e){}
 function persist(){try{localStorage.setItem(SAVEK,JSON.stringify(save))}catch(e){}}
 const probe=document.getElementById('sp');
 function readSafe(){if(window.__SAFE){SAFE=Object.assign({t:0,r:0,b:0,l:0},window.__SAFE);return}const c=getComputedStyle(probe);SAFE={t:parseFloat(c.paddingTop)||0,r:parseFloat(c.paddingRight)||0,b:parseFloat(c.paddingBottom)||0,l:parseFloat(c.paddingLeft)||0}}
+// KCFIX1: a phone held sideways makes the board too small to read or tap, so ask to turn it upright (tablets are fine)
+function checkRot(){let el=document.getElementById('rotNote');const side=innerWidth>innerHeight*1.15&&innerHeight<560;
+ if(!el){if(!side)return;el=document.createElement('div');el.id='rotNote';el.setAttribute('role','alert');
+  el.innerHTML='<div style="font-size:64px;line-height:1">📱</div><div>Turn your phone upright to play</div><div style="font-size:18px;font-weight:600;opacity:.9">This game is made for a tall screen.</div>';
+  Object.assign(el.style,{position:'fixed',left:'0',top:'0',right:'0',bottom:'0',zIndex:'70',display:'none',flexDirection:'column',alignItems:'center',justifyContent:'center',gap:'12px',background:'rgba(18,10,46,.96)',color:'#fff',font:'800 26px/1.3 system-ui,-apple-system,Segoe UI,sans-serif',textAlign:'center',padding:'20px',boxSizing:'border-box'});
+  document.body.appendChild(el);setInterval(()=>{if(el.style.display==='flex'){try{autoPause()}catch(e){}}},400)}
+ el.style.display=side?'flex':'none';if(side){try{autoPause()}catch(e){}}}
 function resize(){VW=innerWidth;VH=innerHeight;DPR=Math.min(3,window.devicePixelRatio||1);CV.width=Math.round(VW*DPR);CV.height=Math.round(VH*DPR);CV.style.width=VW+'px';CV.style.height=VH+'px';readSafe();
- SC=Math.min(VW/400,VH/700);LH=VH/SC;OXs=(VW-400*SC)/2;OYs=0;bgCache=null}
+ SC=Math.min(VW/400,VH/700);LH=VH/SC;OXs=(VW-400*SC)/2;OYs=0;bgCache=null;checkRot()}
 // logical safe box
 function SB(){return{l:Math.max(0,(SAFE.l-OXs)/SC),r:Math.min(400,(VW-SAFE.r-OXs)/SC),t:SAFE.t/SC,b:LH-SAFE.b/SC}}
 const clamp=(v,a,b)=>v<a?a:v>b?b:v,lerp=(a,b,t)=>a+(b-a)*t,rand=(a,b)=>a+Math.random()*(b-a),ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
@@ -187,7 +194,7 @@ function randCell(level,c,r,colArr){const u=Math.random();
 const pushInterval=()=>Math.max(3.2,10.5*Math.pow(.89,G.level-1));
 const busy=()=>!!(G.tg||G.flights.length||G.res);
 function canAct(){if(!G||G.panel||G.kelly.stun>0||G.tg)return false;if(G.mode==='puzzle')return !G.flights.length&&!G.res;return !G.res||G.res.step==='pop'}
-function moveKelly(d){if(!G||G.panel)return;const n=clamp(G.kelly.col+d,0,G.NC-1);if(n!==G.kelly.col){G.kelly.col=n;G.kelly.hop=1;SFX.move();if(G.hint&&G.hint.t>0)G.hint.t=Math.min(G.hint.t,6)}}
+function moveKelly(d){if(!G||G.panel)return;const n=clamp(G.kelly.col+d,0,G.NC-1);if(n!==G.kelly.col){G.kelly.col=n;G.kelly.hop=1;SFX.move();if(G.hint&&G.hint.life>0)G.hint.life=Math.min(G.hint.life,6)}}
 function setKellyCol(n){n=clamp(n,0,G.NC-1);if(n!==G.kelly.col){G.kelly.col=n;G.kelly.hop=1;SFX.move()}}
 function act(){if(!G||G.panel||paused)return;if(!canAct()){if(G.queue.length<1)G.queue.push(G.kelly.col);return}doAct(G.kelly.col)}
 function doAct(col){const K=G.kelly;G.hint=null;
@@ -251,14 +258,40 @@ function useBurp(){if(!G||G.mode!=='endless'||G.burps<=0||busy()||G.panel)return
 function levelUp(){G.level++;G.gemsN-=G.need;G.need=25+10*(G.level-1);if(G.burps<3)G.burps++;SFX.level();announce('Level '+G.level+'!  Faster vines!',4,0);G.kelly.emo='happy';G.kelly.emoT=1.5;bgCache=null}
 function undo(){if(!G||G.mode!=='puzzle'||!G.undo.length||busy()||(G.panel&&G.panel!=='fail'))return;const u=G.undo.pop();G.B=u.B;G.moves=u.moves;G.score=u.score;G.popped=u.popped;G.hold=null;G.panel=null;G.hint=null;
  const keep=new Set();G.B.forEach((col,c)=>col.forEach((x,r)=>{keep.add(x.id);if(!V.has(x.id)){const v=newVis(x,colX(c),rowY(r));v.sx=.2;v.sy=.2}else{const v=V.get(x.id);v.eaten=null;v.grabbed=0}}));for(const id of [...V.keys()])if(!keep.has(id))V.delete(id);SFX.whiff();flash('Undo')}
-function hint(){if(!G||G.mode!=='puzzle'||busy()||G.panel)return;if(G.hold){G.hint={kind:'back',t:8};flash('Put it back first, then ask again.');return}
- const r=hintMoves();
- if(r.moves&&r.moves.length){const [f,t]=r.moves[0];G.hint={f,t,t2:t,kind:'move',t:10,left:r.moves.length};flash('Hint: '+r.moves.length+' move'+(r.moves.length>1?'s':'')+' to go!')}else{G.hint=null;flash('No way out from here. Try Undo!')}}
-// next moves: follow the verified stored solution if we're on it, otherwise search from the current board
-function hintMoves(){const P=PUZ[G.pi],k0=KC.key(G.B),left=G.limit-G.moves;const B=KC.parse(P.spec);
- for(let k=0;k<=P.sol.length;k++){if(KC.key(B)===k0&&P.sol.length-k<=left)return{moves:P.sol.slice(k)};if(k<P.sol.length)KC.move(B,P.sol[k][0],P.sol[k][1])}
- return KC.solve(KC.clone(G.B),150000,left)}
-function flash(s){G.toast={s,t:2.2}}
+function hint(){if(!G||G.mode!=='puzzle'||busy()||G.panel)return;if(G.hold){G.hint={kind:'back',life:8};flash('Put it back first, then ask again.');return}
+ if(G.think)return;const left=G.limit-G.moves,on=onPath(G.B,left);
+ if(on){showHint({moves:on});return}
+ G.hint=null;G.think={s:hintSearch(G.B,left,900000),k:KC.key(G.B),m:G.moves,t:0};G.toast={s:'🤔 Thinking…',t:99}}
+// KCFIX1: hint target column is .to and the timer is .life (they used to share the key .t)
+function showHint(r){if(r.moves&&r.moves.length){const [f,t]=r.moves[0];G.hint={f,to:t,kind:'move',life:10,left:r.moves.length};flash('Hint: '+r.moves.length+' move'+(r.moves.length>1?'s':'')+' to go!');return}
+ G.hint=null;const n=undoBack(),u=n>1?'Tap Undo '+n+' times':'Tap Undo once';
+ if(r.proved)flash(n?'No way out from here. '+u+'!':'No way out from here. Try Undo!',3.5);else flash(n?'Tricky spot! '+u+' to get back on track.':'Tricky spot! Try Undo.',3.5)}
+// follow the verified stored solution if this board is on it (instant)
+function onPath(B0,left){const P=PUZ[G.pi],k0=KC.key(B0),B=KC.parse(P.spec);
+ for(let k=0;k<=P.sol.length;k++){if(KC.key(B)===k0&&P.sol.length-k<=left)return P.sol.slice(k);if(k<P.sol.length)KC.move(B,P.sol[k][0],P.sol[k][1])}return null}
+// how many Undo taps get back onto the stored solution (0 = unknown)
+function undoBack(){for(let k=1;k<=G.undo.length;k++){const u=G.undo[G.undo.length-k];if(u&&u.B&&onPath(u.B,G.limit-u.moves))return k}return 0}
+// next moves, synchronous (bot / tests only)
+function hintMoves(){const left=G.limit-G.moves,on=onPath(G.B,left);if(on)return{moves:on};const s=hintSearch(G.B,left,400000);let r;while(!(r=s.step(1e9)));return r}
+// depth-limited search with a memory of dead ends. step(ms) works for at most ms and returns null until it has an answer,
+// so the game keeps running while it thinks. {moves} = found, {proved} = truly no way out, {capped} = gave up (never claims "no way out").
+function hintSearch(B0,maxD,maxNodes){const fail=new Map();let nodes=0,done=null;
+ const kids=B=>{const out=[],seen=new Set([KC.key(B)]);for(const [f,t] of KC.legal(B)){if(f===t)continue;const N=KC.clone(B);const r=KC.move(N,f,t);if(!r)continue;const k=KC.key(N);if(seen.has(k))continue;seen.add(k);out.push({f,t,N,k,n:KC.count(N),sc:(r.spit.kind==='eat'?2:0)+r.settle.popped})}out.sort((a,b)=>a.n-b.n||b.sc-a.sc);return out};
+ if(KC.count(B0)===0)done={moves:[]};if(!done&&maxD<=0)done={moves:null,proved:true};
+ const st=done?[]:[{B:KC.clone(B0),k:KC.key(B0),ch:null,i:0,d:0}],path=[];
+ function step(ms){const t0=performance.now();
+  while(!done){if(!st.length){done={moves:null,proved:true};break}
+   if(nodes>maxNodes){done={moves:null,capped:true};break}
+   if(performance.now()-t0>ms)return null;
+   const fr=st[st.length-1];if(!fr.ch){fr.ch=kids(fr.B);nodes+=fr.ch.length}
+   if(fr.i>=fr.ch.length){fail.set(fr.k,maxD-fr.d);st.pop();path.pop();continue}
+   const c=fr.ch[fr.i++];
+   if(c.n===0){path.push([c.f,c.t]);done={moves:path.slice()};break}
+   const rem=maxD-fr.d-1;if(rem<=0)continue;if((fail.get(c.k)||0)>=rem)continue;
+   st.push({B:c.N,k:c.k,ch:null,i:0,d:fr.d+1});path.push([c.f,c.t])}
+  done.nodes=nodes;return done}
+ return{step}}
+function flash(s,t){G.toast={s,t:t||2.2}}
 function updateGame(dt){const K=G.kelly;G.t+=dt;
  // kelly motion
  const tx=colX(K.col);const a=900*(tx-K.x)-2*Math.sqrt(900)*K.vx*.95;K.vx+=a*dt;K.x+=K.vx*dt;if(Math.abs(tx-K.x)<.3&&Math.abs(K.vx)<5){K.x=tx;K.vx=0}
@@ -266,7 +299,8 @@ function updateGame(dt){const K=G.kelly;G.t+=dt;
  K.blinkT-=dt;if(K.blinkT<0)K.blinkT=rand(2,5);
  if(G.panel){G.panelT+=dt;return}
  if(G.toast){G.toast.t-=dt;if(G.toast.t<=0)G.toast=null}
- if(G.hint){G.hint.t-=dt;if(G.hint.t<=0)G.hint=null}
+ if(G.hint){G.hint.life-=dt;if(G.hint.life<=0)G.hint=null}
+ if(G.think){const T=G.think;if(KC.key(G.B)!==T.k||G.moves!==T.m||G.hold){G.think=null;if(G.toast&&G.toast.t>50)G.toast=null}else{T.t+=dt;let r=T.s.step(9);if(!r&&T.t>6)r={moves:null,capped:true};if(r){G.think=null;G.toast=null;showHint(r)}}}
  G.tipT+=dt;
  // tongue
  const tg=G.tg;if(tg){tg.t+=dt;if(tg.phase==='out'){const p=Math.min(1,tg.t/tg.dur);tg.len=ease.out(p);if(p>=1){tongueHit();tg.phase='back';tg.t=0;tg.dur=tg.res==='ok'?.10:tg.res==='empty'?.07:.12}}
@@ -457,7 +491,7 @@ function drawWorld(){const s=GE.s;const sh=G.shake>.3?G.shake:0;X.save();X.trans
  // column beam
  const kc=G.kelly.col;const bx=colX(kc);const gg=X.createLinearGradient(0,top,0,GE.dangerY);gg.addColorStop(0,'rgba(255,255,255,0)');gg.addColorStop(1,G.hold?'rgba(255,240,150,.28)':'rgba(255,255,255,.16)');X.fillStyle=gg;X.fillRect(bx-GE.colW/2+2,top-10,GE.colW-4,GE.dangerY-top+10);
  // hint markers
- if(G.hint&&G.hint.kind==='move'){const a=.5+.5*Math.sin(RT*8);for(const [c,col] of [[G.hint.f,'#7dff8a'],[G.hint.t,'#ffd84d']]){X.strokeStyle=col;X.globalAlpha=.35+.5*a;X.lineWidth=3;X.setLineDash([6,5]);rr(colX(c)-GE.colW/2+3,top-8,GE.colW-6,GE.dangerY-top+4,10);X.stroke();X.setLineDash([])}X.globalAlpha=1}
+ if(G.hint&&G.hint.kind==='move'){const a=.5+.5*Math.sin(RT*8);for(const [c,col] of [[G.hint.f,'#7dff8a'],[G.hint.to,'#ffd84d']]){X.strokeStyle=col;X.globalAlpha=.35+.5*a;X.lineWidth=3;X.setLineDash([6,5]);rr(colX(c)-GE.colW/2+3,top-8,GE.colW-6,GE.dangerY-top+4,10);X.stroke();X.setLineDash([])}X.globalAlpha=1}
  // branch
  X.fillStyle='#7a4a24';rr(x0-10,top-26,w+20,13,6);X.fill();X.fillStyle='#9c6434';rr(x0-10,top-26,w+20,5,3);X.fill();
  for(let i=0;i<G.NC+1;i++){const lx=x0+i*GE.colW;X.fillStyle=i%2?'#3fa54a':'#58c25c';X.beginPath();X.ellipse(lx,top-26,9,5,-.5+Math.sin(RT*1.5+i)*.2,0,6.283);X.fill()}
@@ -565,7 +599,7 @@ function drawTitle(){const s=SB();menuBtns=[];
  const tot=save.stars.reduce((a,b)=>a+(b||0),0);
  button('puzzles',bx,by+bh+gap,bw,bh,'🧩 Puzzles',()=>{state='levels'},{col:['#ffd84d','#ff9f1c'],sub:tot+' / '+PUZ.length*3+' stars'});
  button('how',bx,by+(bh+gap)*2,bw,bh,'❓ How to Play',()=>{howFrom='title';howPage=0;state='howto'},{col:['#8fd6ff','#3a8fe0']});
- reg('foot',(s.l+s.r)/2-120,s.b-20,240,16);X.font=FONT(11,800);X.fillStyle='rgba(255,255,255,.85)';X.textAlign='center';X.textBaseline='middle';X.fillText("A five8nine Studios original",(s.l+s.r)/2,s.b-12);
+ reg('foot',(s.l+s.r)/2-130,s.b-26,260,22);menuBtns.push({k:'foot',x:(s.l+s.r)/2-130,y:s.b-26,w:260,h:22,fn:()=>{},dis:true});X.font=FONT(16,800);X.fillStyle='rgba(255,255,255,.85)';X.textAlign='center';X.textBaseline='middle';X.fillText("A five8nine Studios original",(s.l+s.r)/2,s.b-15);
  button('mute',s.r-6-44,s.t+6,44,40,'',toggleMute,{icon:iconSound(!save.muted),col:['#8fd6ff','#3a8fe0']})}
 function lockedUpTo(){let n=1;for(let i=0;i<PUZ.length;i++)if(save.stars[i])n=i+2;return Math.min(PUZ.length,Math.max(n,5))}
 function drawLevels(){const s=SB();menuBtns=[];button('back',s.l+8,s.t+6,90,40,'◀ Back',toTitle,{col:['#ff9ad0','#d4479a'],px:15});topRight(s,false);
