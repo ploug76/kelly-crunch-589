@@ -964,4 +964,21 @@ let last=null;function place(){const D=window.__dock;let v=false;try{v=!!(D&&D.v
  b.style.display='none';last=null}
 setInterval(place,250);addEventListener('resize',place);setTimeout(place,50);
 if(window.__UNLOCK_BAD){const t=document.createElement('div');t.id='unlBad';t.setAttribute('role','alert');t.textContent='That unlock link didn’t work, so this is the free sample. Check the link from your receipt.';document.body.appendChild(t);setTimeout(()=>t.remove(),7000)}
-window.__unlock={unlocked:un,sample:window.__SAMPLE||null,get badge(){return last}}})()</script><!--/unlock--></body></html>
+window.__unlock={unlocked:un,sample:window.__SAMPLE||null,get badge(){return last}}})()</script><!--/unlock--><style id="tap48">/* Peter 10/28: button/text size round - tap targets 48px, labels 16px */
+#dock .dk{min-height:48px!important;height:48px!important;min-width:48px!important;font-size:16px!important;line-height:44px!important;border-radius:24px!important;padding:0 8px!important}
+#dock .dk.ic{padding:0!important}
+#dock .dk.ic,#dock .dk.ic~#lbBtn{min-width:48px!important;width:48px!important}
+#dockHint{font-size:16px!important;padding-right:58px!important;min-height:54px}
+#dockHintX{width:48px!important;height:48px!important;margin-top:-24px!important;border-radius:24px!important;font-size:18px!important}
+#smpBuy{height:48px!important;line-height:44px!important;font-size:16px!important;border-radius:24px!important}
+#smpLock .b{min-height:48px!important}
+#smpLock .lnk{display:flex!important;align-items:center;justify-content:center;min-height:48px!important;font-size:16px!important;margin-top:4px!important}
+#palbX{width:48px!important;height:48px!important;border-radius:24px!important}
+#palbCard h2{margin-left:56px!important;margin-right:56px!important}
+#palbCard .sub,#palbCard .note,#palbCard .err{font-size:16px!important}
+#palbCard .src{font-size:14px!important}
+#palbCard .b{min-height:48px!important}
+#palbTabs button{min-height:48px!important;font-size:16px!important}
+#palbList li{min-height:30px;height:auto!important;font-size:16px!important}
+</style>
+</body></html>
