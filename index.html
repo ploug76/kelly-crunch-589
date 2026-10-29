@@ -636,7 +636,7 @@ function drawLevels(){const s=SB();menuBtns=[];button('back',s.l+8,s.t+6,90,44,'
   button('lvprev',s.l+12,ny,bw,navH,'◀ Prev',()=>{lvPage=Math.max(0,lvPage-1)},{dis:lvPage===0,col:['#8fd6ff','#3a8fe0'],px:18});
   button('lvnext',s.r-12-bw,ny,bw,navH,'Next ▶',()=>{lvPage=Math.min(pages-1,lvPage+1)},{dis:lvPage>=pages-1,col:['#8fd6ff','#3a8fe0'],px:18});
   reg('lvpg',s.l+12+bw+6,ny,s.r-s.l-24-2*bw-12,navH);outlined((first+1)+'–'+last+'  ('+(lvPage+1)+'/'+pages+')',mid,ny+navH/2,18,'#ffe14d','#3a1050',4)}}
-const HOW=[{t:'Meet Kelly!',d:'Swipe left or right to move Kelly between columns. Tap anywhere to shoot her tongue up and grab the bottom critter. Tap again to spit it into the column above her. (Keyboard: ← → move, Space shoots.)',art:'kelly'},
+const HOW=[{t:'Meet Kelly!',d:'Swipe left or right to move Kelly between columns. Tap anywhere to shoot her tongue up and grab the bottom critter. Tap again to spit it into the column above her. (Keyboard: ← → move, Space shoots. Controller: stick or D-pad moves, A shoots, X burp, Y hint, LB/B undo, Start pauses, Select mutes.)',art:'kelly'},
  {t:'Feed the Food Chain',d:'Round Nibblers feed triangle Munchers, and Munchers feed horned Chompers. Spit the wrong size and it just sticks on the bottom of the column.',art:'sizes'},
  {t:'Full Critters Pop',d:'A critter that has eaten gets puffy cheeks: it is FULL. Feed it once more, or feed it to a bigger critter, and it POPS!',art:'full'},
  {t:'Chain Reactions',d:'A pop spreads to touching critters of the same size AND color. Critters below climb up, and if they climb into a bigger critter it eats them. That’s a combo!',art:'chain'},
@@ -992,4 +992,17 @@ window.__unlock={unlocked:un,sample:window.__SAMPLE||null,get badge(){return las
 #palbTabs button{min-height:48px!important;font-size:16px!important}
 #palbList li{min-height:30px;height:auto!important;font-size:16px!important}
 </style>
+<!-- gamepad:start -->
+<script src="gamepad.js?v=1"></script>
+<script>
+GamepadSupport.init({
+ keys:{left:'ArrowLeft',right:'ArrowRight',a:'Space',up:'Space',x:'KeyB',y:'KeyH',lb:'KeyZ',b:'KeyZ',start:'KeyP',back:'KeyM'},
+ noRepeat:['a','up','x','y','lb','b','start','back'],
+ ignoreSel:'#dock,#mute,#pause,#inst,#ios,.tb,#dockHint',
+ menu:function(){return !!document.querySelector('#palbOv.on,#smpLock.on')||state!=='play'||!G||paused||!!G.panel;},
+ items:GamepadSupport.list(function(){return document.querySelector('#palbOv.on,#smpLock.on')?[]:menuBtns;},{scale:function(){return SC},origin:function(){return [OXs,OYs]}}),
+ back:function(){if(document.querySelector('#palbOv.on,#smpLock.on'))return false;var b=menuBtns.filter(function(x){return /^(back|hx|x|close|resume)$/i.test(x.k)})[0];if(b&&!b.dis){b.fn();return true}return false;}
+});
+</script>
+<!-- gamepad:end -->
 </body></html>
